@@ -1,12 +1,54 @@
-{% extends "base.html" %}
-{% block title %}{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+    <title>Sports Attendance</title>
+</head>
+<body>
+    <h1>Sports Attendance</h1>
 
-{% block content %}
-    <div class="title">
-        <h1></h1>
-        <h3></h3>
+    <!-- Attendance Table -->
+    <h2>Attendance Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Sport</th>
+                <th>Attendance (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.Sport }}</td>
+                <td>{{ item.Attendance }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+    <div id="chart">
+        {{ chart_html|safe}}
     </div>
-    <div class="description">
-        
+
+    <script>
+        const chartData = {{ chart_json|safe}};
+        Plotly.newPlot('chart', chartData);
+
+        // Add click event listener
+        document.getElementById('chart').on('plotly_click', function(event) {
+            const sport = event.points[0].x; // Get the sport name from the clicked bar
+            window.location.href = `/sport/${sport}`;
+        });
+    </script>
+
+    <div id="demo-scatter-plot">
+        <h2>Demo Scatter Plot</h2>
+        {{ scatter|safe }}
     </div>
-{% endblock %}
+
+</body>
+</html>
