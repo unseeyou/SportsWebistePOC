@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="{{ url_for("static", filename="css/style.css") }}" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
     <title>Sports Attendance</title>
 </head>
@@ -16,7 +16,7 @@
         <thead>
             <tr>
                 <th>Sport</th>
-                <th>Attendance (%)</th>
+                <th>No. of Students</th>
             </tr>
         </thead>
         <tbody>

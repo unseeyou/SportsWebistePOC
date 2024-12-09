@@ -1,8 +1,365 @@
-body {
-    font-family: "Comic Sans MS";
+@font-face { font-family: Comfortaa; src: url('fonts/Comfortaa-Regular.ttf'); }
+@font-face { font-family: Comfortaa; font-weight: bold; src: url('fonts/Comfortaa-Bold.ttf'); }
+@font-face { font-family: Comfortaa; font-weight: 200; src: url('fonts/Comfortaa-Light.ttf'); }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
 }
 
+body {
+    font-family: Comfortaa, cursive;
+    background-color: antiquewhite;
+    line-height: 1.7;
+    position: relative;
+    font-size-adjust: 0.55;
+}
+
+::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
+main {
+    background-color: aliceblue;
+    border-radius: 30px;
+    margin: 5vh;
+    padding: 2vh 4vh;
+}
+
+.example {
+    margin: 30px 20%;
+}
+
+.title {
+    text-align: center;
+    margin: 1%;
+}
 
 .title h1 {
-    font-size: 30px;
+    color: #343a71;
+}
+
+.title h3 {
+    color: #3a839e;
+    font-weight: bold;
+}
+
+.description {
+    text-align: center;
+    padding: 3%;
+}
+
+.description p {
+    color: #494e7d;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: justify;
+    font-weight: normal;
+}
+
+.description li {
+    color: #494e7d;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: left;
+    font-weight: 400;
+    padding-right: 12%;
+    padding-left: 12%;
+}
+
+.description h3 {
+    color: #3a839e;
+    font-weight: bold;
+}
+
+.description h4 {
+    color: #126094;
+    font-weight: bold;
+}
+
+.description img {
+    width: 70%;
+    margin-top: 3%;
+    border-radius: 10px;
+}
+
+.description ul {
+    list-style-type: none;
+}
+
+.description ol {
+    list-style-position: inside;
+}
+
+.description li {
+    margin: 10px;
+}
+
+.description a {
+    color: #268e05;
+    text-decoration-line: none;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.description table {
+    width: 80%;
+    display: block;
+    margin: auto;
+    text-align: left;
+}
+
+.description tr{
+    background-color: floralwhite;
+    border: black 1px solid;
+}
+
+.description tr:hover {
+    background-color: gainsboro;
+}
+
+.description th {
+    background-color: #3a839e;
+    color: antiquewhite;
+    padding: 0.5vh;
+    text-align: left;
+}
+
+.description td {
+    padding: 0.5vh;
+}
+
+header {
+    color: #ffffff;
+    background-color: #343a71;
+    text-decoration: none;
+    text-decoration-color: white;
+}
+
+nav {
+    text-align: center;
+}
+
+.gonk {
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+}
+
+.gonk p {
+    color: firebrick;
+}
+
+.phant {
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+}
+
+.home p {
+    text-align: center;
+}
+
+/*** Works on common browsers ***/
+::selection {
+    background-color: #343a71;
+    color: mediumaquamarine;
+}
+
+/*** Mozilla based browsers ***/
+::-moz-selection {
+    background-color: #343a71;
+    color: mediumaquamarine;
+}
+
+.menubutton {
+    position: fixed;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    left: 1vh;
+    bottom: 1vh;
+    background-color: #343a71;
+    color: antiquewhite;
+    width: 5vh;
+    text-align: center;
+    padding: 1vh;
+}
+
+.menubutton:hover {
+    background-color: mediumaquamarine;
+}
+
+#sidebar-wrapper {
+    background-color: antiquewhite;
+    color: darkcyan;
+    font-weight: Normal;
+    min-height: 100vh;
+    width: 12rem;
+    transition: margin-left 0.5s ease;
+}
+
+.sidebar-heading {
+    font-size: 23px;
+    text-align: center;
+    padding: 1vh;
+    border: mediumaquamarine 10px solid;
+}
+
+.list-group-item {
+    text-decoration: none;
+    color: darkcyan;
+    padding: 1vh;
+    background: transparent;
+    border: mediumaquamarine 1px solid;
+    font-size-adjust: 0.45;
+}
+
+.list-group-item:hover {
+    background-color: mediumaquamarine;
+}
+
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: -12rem;
+    }
+
+    #sidebar-wrapper.toggled {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 769px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #sidebar-wrapper.toggled {
+        margin-left: -12rem;
+    }
+}
+
+#content-wrapper {
+    width: 100%;
+}
+
+.form-check {
+    padding: 0.5vh;
+    margin-left: 6vh;
+    margin-bottom: 1vh;
+    font-size: 20px;
+}
+
+.question {
+    margin-top: 3vh;
+    font-weight: bold;
+    padding-left: 5vh;
+}
+
+.q-button {
+    margin-top: 30vh;
+    margin-right: 3vh;
+    text-align: center;
+}
+
+.question-title {
+    padding-top: 3vh;
+    padding-left: 4vh;
+}
+
+.radio {
+    cursor: pointer;
+    transition: 0.6s ease;
+}
+
+input[type="radio"] {
+  /* Add your desired styles here */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: antiquewhite;
+  border: 1px solid #343a71;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  outline: none;
+}
+
+input[type="radio"]:checked {
+  /* Add styles for the checked state */
+  background-color: #343a71;
+}
+
+.topbutton {
+    color: antiquewhite;
+    text-align: center;
+    padding: 1vh;
+    display: none;
+    margin: 0 auto 2vh;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 6vh;
+}
+
+.cards .card {
+    margin: 2vh;
+}
+
+.cards img {
+    border-radius: 10px;
+    width: 90%;
+    margin: 1vh auto;
+    height: 50%;
+}
+
+.cards a {
+    color: antiquewhite;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.quizcard {
+    display: block;
+    margin: 2vh auto;
+}
+
+.quizcard img{
+    border-radius: 10px;
+    width: 90%;
+    margin: 1vh auto;
+    height: 50%;
+}
+
+.quizcard a {
+    color: antiquewhite;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.glossarybutton {
+    display: block;
+    width: 50%;
+    text-align: right;
+}
+
+#glossarySearchTerm {
+    width: 35%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #f8f8f8;
 }

@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 import process_attendance_data
-import random
 
 app = Flask(__name__)
 
@@ -9,7 +8,7 @@ test = process_attendance_data.student_count_per_sport("uploads/dummy_student_sp
 
 attendance_data = [{
     "Sport": x["sport"],
-    "Attendance": random.randint(76,99)
+    "Attendance": x["unique_students"],
 } for x in test]
 
 
