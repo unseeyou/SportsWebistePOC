@@ -3,7 +3,7 @@ import plotly.io as pio
 
 import openpyxl as op
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def convert_to_24hr(time_str):
@@ -19,7 +19,7 @@ def calculate_session_length(start_time, end_time):
     session_length = end_time - start_time
     # account for going over to the next day (edge case due to bad data)
     if session_length.total_seconds() < 0:
-        session_length = datetime.strptime("23:59", "%H:%M") - start_time
+        session_length = (end_time + timedelta(days=1)) - start_time
     return session_length
 
 
@@ -90,6 +90,39 @@ def student_count_per_sport(fp: str):
 def average_session_length(fp: str):
     wb = op.load_workbook(fp)
     sheet = wb.active
+    sessions = {}
+
     for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
         start = row[15]
         end = row[16]
+        sport = row[12]
+
+        if start and end:
+            session_length = calculate_session_length(start, end)
+            if sport not in sessions:
+                sessions[sport] = []
+            sessions[sport].append(session_length.total_seconds() / 60)
+
+    for sport, session_lengths in sessions.items():
+        sessions[sport] = sum(session_lengths) / len(session_lengths)  # change total to average
+
+    min_session_length = min(sessions.values())
+    y_axis_start = max(0, min_session_length - 10)
+    y_axis_end = max(sessions.values()) + 10
+
+    chart = go.Figure(
+        data=go.Bar(x=list(sessions.keys()), y=list(sessions.values()), name="Average Session Length"),
+    )
+
+    chart.update_layout(
+        title="Average Session Length per Sport",
+        title_x=0.5,
+        title_font_size=30,
+        title_font_family="Comfortaa",
+        xaxis_title="Sport",
+        yaxis_title="Average Session Length (min)",
+        yaxis=dict(range=[y_axis_start, y_axis_end]),
+        # clickmode="event+select"
+    )
+
+    return chart.to_html(full_html=False)
