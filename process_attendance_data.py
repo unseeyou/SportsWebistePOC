@@ -3,6 +3,24 @@ import plotly.io as pio
 
 import openpyxl as op
 import random
+from datetime import datetime
+
+
+def convert_to_24hr(time_str):
+    # seperate the numbers from the letters to achieve proper format
+    index = time_str.find(":") + 3  # account for minutes
+    time_str = time_str[:index] + " " + time_str[index:]
+    return datetime.strptime(time_str, "%I:%M %p")
+
+
+def calculate_session_length(start_time, end_time):
+    start_time = convert_to_24hr(start_time)
+    end_time = convert_to_24hr(end_time)
+    session_length = end_time - start_time
+    # account for going over to the next day (edge case due to bad data)
+    if session_length.total_seconds() < 0:
+        session_length = datetime.strptime("23:59", "%H:%M") - start_time
+    return session_length
 
 
 def percent_bar_chart(data):
@@ -67,3 +85,11 @@ def student_count_per_sport(fp: str):
             }
         )
     return summary_data
+
+
+def average_session_length(fp: str):
+    wb = op.load_workbook(fp)
+    sheet = wb.active
+    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
+        start = row[15]
+        end = row[16]

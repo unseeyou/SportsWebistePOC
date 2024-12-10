@@ -12,7 +12,7 @@
 
 body {
     font-family: Comfortaa, cursive;
-    background-color: antiquewhite;
+    background-color: white;
     line-height: 1.7;
     position: relative;
     font-size-adjust: 0.55;
@@ -23,7 +23,7 @@ body {
 }
 
 main {
-    background-color: aliceblue;
+    background-color: floralwhite;
     border-radius: 30px;
     margin: 5vh;
     padding: 2vh 4vh;
