@@ -126,3 +126,29 @@ def average_session_length(fp: str):
     )
 
     return chart.to_html(full_html=False)
+
+
+def cancelled_sessions(fp: str):
+    wb = op.load_workbook(fp)
+    sheet = wb.active
+    sessions = {}
+
+    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
+        sport = row[12]
+        cancelled_status = row[21]
+
+        if cancelled_status:
+            if sport not in sessions:
+                sessions[sport] = {
+                    "Total": 0,
+                    "Cancelled": 0,
+                    "Percentage": 0.0,
+                }
+            sessions[sport]["Total"] += 1
+            if cancelled_status == "Yes":
+                sessions[sport]["Cancelled"] += 1
+
+    for sport in sessions:
+        sessions[sport]["Percentage"] = round((sessions[sport]["Cancelled"] * 100) / sessions[sport]["Total"], 2)
+
+    return sessions

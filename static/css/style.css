@@ -144,28 +144,6 @@ nav {
     text-align: center;
 }
 
-.gonk {
-    align-content: center;
-    align-items: center;
-    align-self: center;
-    text-align: center;
-}
-
-.gonk p {
-    color: firebrick;
-}
-
-.phant {
-    align-content: center;
-    align-items: center;
-    align-self: center;
-    text-align: center;
-}
-
-.home p {
-    text-align: center;
-}
-
 /*** Works on common browsers ***/
 ::selection {
     background-color: #343a71;
@@ -362,4 +340,28 @@ input[type="radio"]:checked {
     border-radius: 4px;
     font-size: 16px;
     background-color: #f8f8f8;
+}
+
+.hide {
+    display: none;
+}
+
+.dlbutton {
+    display: block;
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    color: white;
+    background-color: #343a71;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.6s ease;
+}
+
+.dlbutton:hover {
+    background-color: #268e05;
+    box-shadow: black 1px 1px 1px 1px;
 }
