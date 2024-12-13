@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="title">
+    <h1>Sports</h1>
+    <h3>Attendance Records</h3>
+</div>
+
+<div class="description">
+    <h2>Attendance Data</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sport</th>
+                    <th>No. of Students</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr>
+                    <td>{{ item.Sport }}</td>
+                    <td>{{ item.Attendance }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+
+        <div id="chart">
+            {{ chart_html|safe}}
+        </div>
+
+        <script>
+            const chartData = {{ chart_json|safe}};
+            Plotly.newPlot('chart', chartData);
+
+            // Add click event listener
+            document.getElementById('chart').on('plotly_click', function(event) {
+                const sport = event.points[0].x; // Get the sport name from the clicked bar
+                window.location.href = `/sport/${sport}`;
+            });
+        </script>
+
+        <div id="demo-scatter-plot">
+            <h2>Demo Scatter Plot</h2>
+            {{ scatter|safe }}
+        </div>
+
+            <div id="avg-training-times">
+                <h2>Average Training Times</h2>
+                {{ av_training_times|safe }}
+            </div>
+
+
+            <iframe name="hiddenFrame" class="hide"></iframe>
+            <form action="{{ url_for('cancelled_sessions') }}" method="post" target="hiddenFrame">
+                <button type="submit" onclick="window.alert('File Downloaded')" class="dlbutton">Download Cancelled Sessions</button>
+            </form>
+</div>
+{% endblock %}
