@@ -1,0 +1,42 @@
+{
+    "Rifle Shooting": {
+        "Total": 574,
+        "Cancelled": 58,
+        "Percentage": 10.1
+    },
+    "Basketball": {
+        "Total": 656,
+        "Cancelled": 61,
+        "Percentage": 9.3
+    },
+    "Cricket": {
+        "Total": 637,
+        "Cancelled": 50,
+        "Percentage": 7.85
+    },
+    "Swimming": {
+        "Total": 692,
+        "Cancelled": 65,
+        "Percentage": 9.39
+    },
+    "Tennis": {
+        "Total": 621,
+        "Cancelled": 59,
+        "Percentage": 9.5
+    },
+    "Sailing": {
+        "Total": 595,
+        "Cancelled": 53,
+        "Percentage": 8.91
+    },
+    "Water Polo": {
+        "Total": 628,
+        "Cancelled": 71,
+        "Percentage": 11.31
+    },
+    "Rowing": {
+        "Total": 597,
+        "Cancelled": 67,
+        "Percentage": 11.22
+    }
+}
