@@ -193,10 +193,11 @@ nav {
 .list-group-item {
     text-decoration: none;
     color: darkcyan;
+    text-align: center;
     padding: 1vh;
     background: transparent;
     border: mediumaquamarine 1px solid;
-    font-size-adjust: 0.45;
+    font-size-adjust: 0.4;
 }
 
 .list-group-item:hover {

@@ -21,6 +21,8 @@ def index():
     sorted_data = sorted(attendance_data, key = lambda x: x["Sport"])
     scatter = process_attendance_data.demo_scatter_plot()
     av_training_times = process_attendance_data.average_session_length("uploads/dummy_student_sports_data.xlsx")
+    cancelled_session_data = process_attendance_data.cancelled_sessions("uploads/dummy_student_sports_data.xlsx")
+    print(cancelled_session_data)
 
     return render_template(
         "home.html",
@@ -28,6 +30,8 @@ def index():
         chart_json=chart_json,
         scatter=scatter,
         av_training_times=av_training_times,
+        sports=process_attendance_data.list_all_sports("uploads/dummy_student_sports_data.xlsx"),
+        cancelled_session_data=cancelled_session_data,
     )
 
 

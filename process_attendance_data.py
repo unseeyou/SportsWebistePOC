@@ -152,3 +152,18 @@ def cancelled_sessions(fp: str):
         sessions[sport]["Percentage"] = round((sessions[sport]["Cancelled"] * 100) / sessions[sport]["Total"], 2)
 
     return sessions
+
+
+def list_all_sports(fp: str):
+    wb = op.load_workbook(fp)
+    sheet = wb.active
+    sports = []
+
+    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
+        sport = row[12]
+
+        if sport:
+            if sport not in sports:
+                sports.append(sport)
+
+    return sports
