@@ -1,42 +1,87 @@
 {
-    "Rifle Shooting": {
-        "Total": 574,
-        "Cancelled": 58,
-        "Percentage": 10.1
+    "Rowing": {
+        "Total": 1556,
+        "Cancelled": 0,
+        "Percentage": 0.0
     },
     "Basketball": {
-        "Total": 656,
-        "Cancelled": 61,
-        "Percentage": 9.3
-    },
-    "Cricket": {
-        "Total": 637,
-        "Cancelled": 50,
-        "Percentage": 7.85
-    },
-    "Swimming": {
-        "Total": 692,
-        "Cancelled": 65,
-        "Percentage": 9.39
+        "Total": 2300,
+        "Cancelled": 100,
+        "Percentage": 4.35
     },
     "Tennis": {
-        "Total": 621,
-        "Cancelled": 59,
-        "Percentage": 9.5
+        "Total": 907,
+        "Cancelled": 10,
+        "Percentage": 1.1
     },
-    "Sailing": {
-        "Total": 595,
-        "Cancelled": 53,
-        "Percentage": 8.91
+    "Strength and Conditioning": {
+        "Total": 1080,
+        "Cancelled": 0,
+        "Percentage": 0.0
     },
     "Water Polo": {
-        "Total": 628,
-        "Cancelled": 71,
-        "Percentage": 11.31
+        "Total": 741,
+        "Cancelled": 0,
+        "Percentage": 0.0
     },
-    "Rowing": {
-        "Total": 597,
-        "Cancelled": 67,
-        "Percentage": 11.22
+    "Cricket": {
+        "Total": 933,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Detention": {
+        "Total": 45,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Sailing": {
+        "Total": 236,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Table Tennis - Summer": {
+        "Total": 616,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Rifle Shooting - Summer": {
+        "Total": 279,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "CHS Basketball": {
+        "Total": 20,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Volleyball": {
+        "Total": 40,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Non-GPS - Summer": {
+        "Total": 82,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Accelerated Athletes": {
+        "Total": 18,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Out of Schedule Activities": {
+        "Total": 66,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Rugby": {
+        "Total": 80,
+        "Cancelled": 0,
+        "Percentage": 0.0
+    },
+    "Swimming": {
+        "Total": 27,
+        "Cancelled": 0,
+        "Percentage": 0.0
     }
 }

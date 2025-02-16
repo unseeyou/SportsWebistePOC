@@ -103,8 +103,12 @@ def average_session_length(fp: str):
                 sessions[sport] = []
             sessions[sport].append(session_length.total_seconds() / 60)
 
+    # print(sessions)
+
     for sport, session_lengths in sessions.items():
         sessions[sport] = sum(session_lengths) / len(session_lengths)  # change total to average
+
+    # print(sessions)
 
     min_session_length = min(sessions.values())
     y_axis_start = max(0, min_session_length - 10)
