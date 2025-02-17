@@ -18,6 +18,17 @@ def setup():
         house text not null
     )
     """)
+
+    cursor.execute("""
+    create table if not exists attendance_records (
+    id integer primary key autoincrement,
+    student_id integer not null,
+    activity text not null,
+    attendance text not null,
+    date text not null,
+    absence_reason text default 'present'
+    )
+    """)
     cursor.close()
 
 
@@ -43,3 +54,6 @@ def populate_students_table():
         )
     connection.commit()
     cursor.close()
+
+
+setup()
