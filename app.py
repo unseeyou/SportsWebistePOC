@@ -1,8 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, send_file
+from flask import Flask, render_template, redirect, url_for, send_file, request, jsonify
 import process_attendance_data
 from process_attendance_data import cancelled_sessions
+from database import database_cmds as db
 from constants import DATA_PATH
-import json
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.secret_key = "super-secret-key"
@@ -50,6 +52,28 @@ def cancelled_sessions():
         json.dump(data, f, indent=4)
 
     return send_file("downloads/cancelled_sessions.json", as_attachment=True)
+
+
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    if request.method == "GET":
+        return render_template("upload.html")
+    elif request.method == "POST":
+        files = request.files
+        if "file" not in files:
+            return jsonify({"error": "No file detected"})
+        file = files["file"]
+        if not file.filename:
+            return jsonify({"error": "No file selected"})
+        if file and file.filename.endswith(".xlsx"):
+            filename = secure_filename(file.filename)
+            fp = os.path.join("uploads", filename)
+            file.save(fp)
+            conn = db.create_connection()
+            db.setup(conn)
+            db.populate_db(fp, conn)
+            return jsonify({"success": "File uploaded successfully"})
+        return jsonify({"error": f"Unsupported file type (.{file.filename.split(".")[-1]})"})
 
 
 if __name__ == "__main__":
