@@ -4,6 +4,7 @@ import plotly.io as pio
 import openpyxl as op
 import random
 from datetime import datetime, timedelta
+from database import database_cmds as db
 
 
 def convert_to_24hr(time_str):
@@ -23,7 +24,7 @@ def calculate_session_length(start_time, end_time):
     return session_length
 
 
-def percent_bar_chart(data):
+def attendance_bar_chart(data):
     sports = []
     attendance_percentages = []
     sorted_data = sorted(data, key=lambda x: x["Attendance"], reverse=True)
@@ -36,7 +37,7 @@ def percent_bar_chart(data):
     y_axis_start = max(0, min_attendance - 10)
 
     bar_chart = go.Figure(
-        data=[go.Bar(x=sports, y=attendance_percentages, name="Attendance Percentage")]
+        data=[go.Bar(x=sports, y=attendance_percentages, name="Attendance Amount")]
     )
 
     bar_chart.update_layout(
@@ -45,8 +46,7 @@ def percent_bar_chart(data):
         title_font_size=30,
         title_font_family="Arial",
         xaxis_title="Sport",
-        yaxis_title="Attendance (%)",
-        yaxis=dict(range=[y_axis_start, 100]),
+        yaxis_title="No. of students attending",
         # clickmode="event+select"
     )
 
@@ -61,14 +61,20 @@ def demo_scatter_plot():
     return scatter_plot
 
 
-def student_count_per_sport(fp: str):
-    wb = op.load_workbook(fp)
-    sheet = wb.active
+def student_count_per_sport():
+    conn = db.create_connection()
+    db.setup(conn)
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT student_id, activity FROM attendance_records
+    """)
+    data = cursor.fetchall()
+    cursor.close()
+
     sports = {}
 
-    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
-        student_id = row[1]
-        sport = row[12]
+    for entry in data:  # skip the header row
+        student_id, sport = entry
 
         if sport and student_id:
             if sport not in sports:
@@ -88,6 +94,7 @@ def student_count_per_sport(fp: str):
 
 
 def average_session_length(fp: str):
+
     wb = op.load_workbook(fp)
     sheet = wb.active
     sessions = {}

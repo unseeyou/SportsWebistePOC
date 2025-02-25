@@ -32,6 +32,8 @@ def setup(connection: sqlite3.Connection):
     activity text not null,
     attendance text not null,
     date text not null,
+    start_time text not null,
+    end_time text not null,
     absence_reason text default 'n/a'
     )
     """)
@@ -59,7 +61,7 @@ def populate_db(path: str, connection: sqlite3.Connection):
         )
 
         cursor.execute("""
-        insert into attendance_records (student_id, activity, attendance, date) VALUES 
+        insert into attendance_records (student_id, activity, attendance, date, start_time, end_time) VALUES 
         (?, ?, ?, ?)
         """,
                        (student_id, activity, attendance, date),

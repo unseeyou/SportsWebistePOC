@@ -9,22 +9,17 @@ import os
 app = Flask(__name__)
 app.secret_key = "super-secret-key"
 
-test = process_attendance_data.student_count_per_sport(DATA_PATH)
-# print(test)
-
-attendance_data = [{
-    "Sport": x["sport"],
-    "Attendance": x["unique_students"],
-} for x in test]
-
-
 @app.route("/")
 def index():
-    chart_json = process_attendance_data.percent_bar_chart(attendance_data)
+    raw_data = process_attendance_data.student_count_per_sport()
+    attendance_data = [{
+        "Sport": x["sport"],
+        "Attendance": x["unique_students"],
+    } for x in raw_data]
+    chart_json = process_attendance_data.attendance_bar_chart(attendance_data)
     sorted_data = sorted(attendance_data, key = lambda x: x["Sport"])
     av_training_times = process_attendance_data.average_session_length(DATA_PATH)
     cancelled_session_data = process_attendance_data.cancelled_sessions(DATA_PATH)
-    print(cancelled_session_data)
 
     return render_template(
         "home.html",
