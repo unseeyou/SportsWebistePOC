@@ -27,6 +27,19 @@
         </table>
         <br>
 
+    <h1>Upload Student Records</h1>
+    <div class="notif-success" style="display: none">
+        <h3>Success!</h3>
+    </div>
+    <div class="notif-error" style="display: none">
+        <h3>Error!</h3>
+    </div>
+    <form action="/upload" method="post" enctype="multipart/form-data" id="file-upload">
+        <label for="file">Select an Excel file to upload:</label>
+        <input type="file" id="file" name="file" accept=".xlsx" required>
+        <button type="submit">Upload</button>
+    </form>
+
     <div class="dropdown">
         <label for="cancelled-filter">Filter by sport: </label>
         <select id="cancelled-filter" onchange="filterCancelledTable()">

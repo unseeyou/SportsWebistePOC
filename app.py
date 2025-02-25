@@ -70,11 +70,17 @@ def upload():
             fp = os.path.join("uploads", filename)
             file.save(fp)
             conn = db.create_connection()
+            db.reset_db(conn)
             db.setup(conn)
             db.populate_db(fp, conn)
             return jsonify({"success": "File uploaded successfully"})
         return jsonify({"error": f"Unsupported file type (.{file.filename.split(".")[-1]})"})
 
+
+@app.route("/api/v1/debug/<msg>", methods=["POST"])
+def debug(msg):
+    print(msg)
+    return f"{msg}"
 
 if __name__ == "__main__":
     app.run(debug=True)

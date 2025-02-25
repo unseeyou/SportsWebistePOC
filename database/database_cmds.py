@@ -66,3 +66,13 @@ def populate_db(path: str, connection: sqlite3.Connection):
                        )
     connection.commit()
     cursor.close()
+
+
+def reset_db(connection: sqlite3.Connection):
+    cursor = connection.cursor()
+    cursor.execute("""
+    DROP TABLE students
+    """)
+    cursor.execute("DROP TABLE attendance_records")
+    connection.commit()
+    cursor.close()
