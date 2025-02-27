@@ -7,7 +7,7 @@ from constants import DATABASE, DATA_PATH
 
 class Database:
     def __init__(self, path: str = DATABASE):
-        def get_sqlite3_thread_safety():  # https://ricardoanderegg.com/posts/python-sqlite-thread-safety/
+        def get_sqlite3_thread_safety():  # https://ricardoanderegg.com/posts/python-sqlite-thread-safety/ a tutorial script to check if it is safe to use the database over multiple threads
 
             # Mape value from SQLite's THREADSAFE to Python's DBAPI 2.0
             # threadsafety attribute.
