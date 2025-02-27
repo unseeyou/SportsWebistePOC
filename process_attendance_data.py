@@ -4,7 +4,6 @@ import plotly.io as pio
 import openpyxl as op
 import random
 from datetime import datetime, timedelta
-from database.database_cmds import database
 
 
 def convert_to_24hr(time_str):
@@ -61,7 +60,7 @@ def demo_scatter_plot():
     return scatter_plot
 
 
-def student_count_per_sport():
+def student_count_per_sport(database):
     cursor = database.get_cursor()
     cursor.execute("""
     SELECT student_id, activity FROM attendance_records
@@ -91,7 +90,7 @@ def student_count_per_sport():
     return summary_data
 
 
-def average_session_length(fp: str):
+def average_session_length(database):
     cursor = database.get_cursor()
     cursor.execute("SELECT start_time, end_time, activity FROM attendance_records")
     data = cursor.fetchall()
@@ -133,7 +132,7 @@ def average_session_length(fp: str):
     return chart.to_html(full_html=False)
 
 
-def cancelled_sessions(fp: str):
+def cancelled_sessions(fp: str, database):
     cursor = database.get_cursor()
     wb = op.load_workbook(fp)
     sheet = wb.active
