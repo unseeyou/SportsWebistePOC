@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, send_file, request, jsonify
 import process_attendance_data
 from process_attendance_data import cancelled_sessions
-from database import database_cmds as db
+from database.database_cmds import database
 from constants import DATA_PATH
 from werkzeug.utils import secure_filename
 import os
@@ -60,10 +60,9 @@ def upload():
             filename = secure_filename(file.filename)
             fp = os.path.join("uploads", filename)
             file.save(fp)
-            conn = db.create_connection()
-            db.reset_db(conn)
-            db.setup(conn)
-            db.populate_db(fp, conn)
+            database.reset()
+            database.setup()
+            database.populate(fp)
             return jsonify({"success": "File uploaded successfully"})
         return jsonify({"error": f"Unsupported file type (.{file.filename.split(".")[-1]})"})
 

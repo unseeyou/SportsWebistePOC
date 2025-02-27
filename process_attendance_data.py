@@ -4,7 +4,7 @@ import plotly.io as pio
 import openpyxl as op
 import random
 from datetime import datetime, timedelta
-from database import database_cmds as db
+from database.database_cmds import database
 
 
 def convert_to_24hr(time_str):
@@ -33,8 +33,8 @@ def attendance_bar_chart(data):
         sports.append(item["Sport"])
         attendance_percentages.append(item["Attendance"])
 
-    min_attendance = min(attendance_percentages)
-    y_axis_start = max(0, min_attendance - 10)
+    # min_attendance = min(attendance_percentages)
+    # y_axis_start = max(0, min_attendance - 10)
 
     bar_chart = go.Figure(
         data=[go.Bar(x=sports, y=attendance_percentages, name="Attendance Amount")]
@@ -62,9 +62,7 @@ def demo_scatter_plot():
 
 
 def student_count_per_sport():
-    conn = db.create_connection()
-    db.setup(conn)
-    cursor = conn.cursor()
+    cursor = database.get_cursor()
     cursor.execute("""
     SELECT student_id, activity FROM attendance_records
     """)
@@ -94,16 +92,12 @@ def student_count_per_sport():
 
 
 def average_session_length(fp: str):
-
-    wb = op.load_workbook(fp)
-    sheet = wb.active
+    cursor = database.get_cursor()
+    cursor.execute("SELECT start_time, end_time, activity FROM attendance_records")
+    data = cursor.fetchall()
     sessions = {}
 
-    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
-        start = row[15]
-        end = row[16]
-        sport = row[12]
-
+    for start, end, sport in data:
         if start and end:
             session_length = calculate_session_length(start, end)
             if sport not in sessions:
@@ -140,6 +134,7 @@ def average_session_length(fp: str):
 
 
 def cancelled_sessions(fp: str):
+    cursor = database.get_cursor()
     wb = op.load_workbook(fp)
     sheet = wb.active
     sessions = {}
