@@ -5,6 +5,10 @@ import logging
 from constants import DATABASE, DATA_PATH
 
 
+class DatabaseUnableToMultiThreadError(Exception):
+    pass
+
+
 # noinspection SqlResolve
 class Database:
     def __init__(self, path: str = DATABASE):
@@ -30,8 +34,9 @@ class Database:
             self.__check_same_thread = False
             logging.warning("allowing database to be accessed through multiple threads")
         else:
-            logging.warning("SITE WILL NOT RUN DUE TO UNSAFE THREADING SETTINGS FOR DATABASE")
+            logging.error("SITE WILL NOT RUN DUE TO UNSAFE THREADING SETTINGS FOR DATABASE")
             self.__check_same_thread = True
+            raise DatabaseUnableToMultiThreadError
 
         self.__path = path
         self.__conn: sqlite3.Connection = self.__create_connection()
