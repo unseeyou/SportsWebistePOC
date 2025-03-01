@@ -5,6 +5,7 @@ import logging
 from constants import DATABASE, DATA_PATH
 
 
+# noinspection SqlResolve
 class Database:
     def __init__(self, path: str = DATABASE):
         def get_sqlite3_thread_safety():  # https://ricardoanderegg.com/posts/python-sqlite-thread-safety/ a tutorial script to check if it is safe to use the database over multiple threads
@@ -116,3 +117,12 @@ class Database:
 
     def close(self):
         self.__conn.close()
+
+    def ping(self) -> bool:
+        c = self.get_cursor()
+        c.execute("SELECT * from students")
+        output = c.fetchone()[0]
+        if not output:
+            return False
+        else:
+            return True
