@@ -46,7 +46,7 @@ def attendance_bar_chart(data):
         title_font_family="Arial",
         xaxis_title="Sport",
         yaxis_title="No. of students attending",
-        # clickmode="event+select"
+        clickmode="event+select",
     )
 
     return pio.to_json(bar_chart)
@@ -128,10 +128,10 @@ def average_session_length(database):
         xaxis_title="Sport",
         yaxis_title="Average Session Length (min)",
         yaxis=dict(range=[y_axis_start, y_axis_end]),
-        # clickmode="event+select"
+        clickmode="event+select"
     )
 
-    return chart.to_html(full_html=False)
+    return chart.to_html(full_html=False, div_id="avg_session_len_chart")
 
 
 def cancelled_sessions(database):

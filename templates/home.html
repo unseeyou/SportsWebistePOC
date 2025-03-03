@@ -89,6 +89,13 @@
             <div id="avg-training-times">
                 <h2>Average Training Times</h2>
                 {{ av_training_times|safe }}
+                <script>
+            // Add click event listener
+            document.getElementById('avg_session_len_chart').on('plotly_click', function(event) {
+                const sport = event.points[0].x; // Get the sport name from the clicked bar
+                window.location.href = `/sport/${sport}`;
+            });
+        </script>
             </div>
 
 
