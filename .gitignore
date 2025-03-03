@@ -5,3 +5,5 @@
 /.idea/ruff.xml
 /.idea/vcs.xml
 /test.py
+/.env
+/client_secrets.json
