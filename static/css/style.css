@@ -374,3 +374,12 @@ input[type="radio"]:checked {
     background-color: #268e05;
     box-shadow: black 1px 1px 1px 1px;
 }
+
+.upload {
+    margin: 2vh 2vh 6vh;
+}
+
+.description td a {
+    text-decoration-line: none;
+    color: black;
+}
