@@ -68,6 +68,10 @@
                 {% endfor %}
             </tbody>
         </table>
+        <iframe name="hiddenFrame" class="hide"></iframe>
+            <form action="{{ url_for('api.cancelled_sessions') }}" method="post" target="hiddenFrame">
+                <button type="submit" onclick="window.alert('File Downloaded')" class="dlbutton">Download Cancelled Sessions</button>
+            </form>
     </div>
     <br>
 
@@ -97,11 +101,5 @@
             });
         </script>
             </div>
-
-
-            <iframe name="hiddenFrame" class="hide"></iframe>
-            <form action="{{ url_for('api.cancelled_sessions') }}" method="post" target="hiddenFrame">
-                <button type="submit" onclick="window.alert('File Downloaded')" class="dlbutton">Download Cancelled Sessions</button>
-            </form>
 </div>
 {% endblock %}
