@@ -12,7 +12,7 @@
 
 body {
     font-family: Comfortaa, cursive;
-    background-color: white;
+    background-color: #1a203f;
     line-height: 1.7;
     position: relative;
     font-size-adjust: 0.55;
@@ -98,12 +98,20 @@ main {
     margin: 10px;
 }
 
-.description a {
-    color: #268e05;
+.btn a {
+    color: #ffffff;
     text-decoration-line: none;
     font-size: 16px;
     font-weight: 400;
-    font-style: italic;
+    font-style: normal;
+}
+
+.back-btn {
+    margin-top: 4vh;
+}
+
+.description .chart {
+    margin: 3vh;
 }
 
 .description table {

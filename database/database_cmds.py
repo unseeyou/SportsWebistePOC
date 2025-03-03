@@ -2,7 +2,7 @@ import sqlite3
 import openpyxl as op
 import logging
 
-from constants import DATABASE, DATA_PATH
+DATABASE = "database/database.db"
 
 
 class DatabaseUnableToMultiThreadError(Exception):
@@ -74,6 +74,19 @@ class Database:
         absence_reason text default 'n/a'
         )
         """)
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS session_records (
+        id integer primary key autoincrement,
+        sport text not null,
+        date text not null, 
+        start text not null,
+        end text not null,
+        cancelled_status text not null,
+        team text not null
+        )
+        """)
+
         cursor.close()
 
     def populate(self, path: str):
@@ -102,10 +115,14 @@ class Database:
             """,
                            (student_id, activity, attendance, date, start_time, end_time),
                            )
+
+            cursor.execute("INSERT INTO session_records (sport, cancelled_status, date, start, end, team) VALUES (?, ?, ?, ?, ?, ?)",
+                           (activity, cancelled_status, date, start_time, end_time, team))
+
         self.commit()
         cursor.close()
 
-    def get_cursor(self):
+    def get_cursor(self) -> sqlite3.Cursor:
         return self.__conn.cursor()
 
     def commit(self):

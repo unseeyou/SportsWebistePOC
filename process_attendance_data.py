@@ -109,8 +109,10 @@ def average_session_length(database):
         sessions[sport] = sum(session_lengths) / len(session_lengths)  # change total to average
 
     # print(sessions)
-
-    min_session_length = min(sessions.values())
+    try:
+        min_session_length = min(sessions.values())
+    except ValueError:
+        return "[]"
     y_axis_start = max(0, min_session_length - 10)
     y_axis_end = max(sessions.values()) + 10
 
@@ -132,15 +134,13 @@ def average_session_length(database):
     return chart.to_html(full_html=False)
 
 
-def cancelled_sessions(fp: str, database):
+def cancelled_sessions(database):
     cursor = database.get_cursor()
-    wb = op.load_workbook(fp)
-    sheet = wb.active
+    cursor.execute("SELECT sport, cancelled_status FROM session_records")
+    data = cursor.fetchall()
     sessions = {}
 
-    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
-        sport = row[12]
-        cancelled_status = row[21]
+    for sport, cancelled_status in data:  # skip the header row
 
         if cancelled_status:
             if sport not in sessions:
@@ -159,16 +159,9 @@ def cancelled_sessions(fp: str, database):
     return sessions
 
 
-def list_all_sports(fp: str):
-    wb = op.load_workbook(fp)
-    sheet = wb.active
-    sports = []
-
-    for row in sheet.iter_rows(min_row=2, values_only=True):  # skip the header row
-        sport = row[12]
-
-        if sport:
-            if sport not in sports:
-                sports.append(sport)
+def list_all_sports(database):
+    cursor = database.get_cursor()
+    cursor.execute("SELECT sport FROM session_records")
+    sports = list(i[0] for i in set(cursor.fetchall()))
 
     return sports

@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, current_app
 import process_attendance_data
-from constants import DATA_PATH
 
 api = Blueprint("api", __name__)
 api.url_prefix = "/api/v1"
@@ -14,7 +13,7 @@ def debug(msg):
 
 @api.route("/cancelled_sessions", methods=["POST"])
 def cancelled_sessions():
-    data = process_attendance_data.cancelled_sessions(DATA_PATH)
+    data = process_attendance_data.cancelled_sessions(current_app.database)
     with open("downloads/cancelled_sessions.json", "w") as f:
         json.dump(data, f, indent=4)
 

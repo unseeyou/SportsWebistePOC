@@ -6,9 +6,19 @@
     <h1>{{sport_name}} Overview</h1>
 </div>
 <div class="description">
-stuff will be here soon
 
-    <a class="btn btn-primary" href="/">Go Back</a>
+    <div class="chart">{{ pie_chart|safe }}</div>
+
+    Student ID Lookup
+    <form id="student-sports-lookup" action="/sport/{{ sport_name }}" method="post">
+        <label for="studentID">Enter Student ID </label>
+        <input type="text" name="studentID" id="studentID">
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="chart">{{ student_pie|safe }}</div>
+
+    <a class="btn btn-primary back-btn" href="/">Go Back</a>
 
 </div>
 {% endblock %}
