@@ -4,6 +4,7 @@ from sqlite3 import OperationalError
 
 homepage = Blueprint("homepage", __name__)
 
+# TODO: fix download button
 
 @homepage.context_processor
 def render_charts():

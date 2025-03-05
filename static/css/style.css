@@ -115,9 +115,8 @@ main {
 }
 
 .description table {
-    width: 80%;
-    display: block;
-    margin: auto;
+    width: 100%;
+    display: inline;
     text-align: left;
 }
 
@@ -128,6 +127,7 @@ main {
 
 .description tr:hover {
     background-color: gainsboro;
+    color: saddlebrown;
 }
 
 .description th {
@@ -379,7 +379,6 @@ input[type="radio"]:checked {
     margin: 2vh 2vh 6vh;
 }
 
-.description td a {
-    text-decoration-line: none;
-    color: black;
+.summary-table {
+    margin: 3vh;
 }

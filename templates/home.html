@@ -23,6 +23,7 @@
     </form>
 </div>
     <h2>Attendance Data</h2>
+    <div class="summary-table">
         <table>
             <thead>
                 <tr>
@@ -33,13 +34,14 @@
             <tbody>
                 {% for item in data %}
                 <tr onclick="window.location.replace('/sport/{{ item.Sport }}')">
-                    <td><a href="/sport/{{ item.Sport }}">{{ item.Sport }}</a></td>
+                    <td>{{ item.Sport }}</td>
                     <td>{{ item.Attendance }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         <br>
+    </div>
 
     <div class="cancelled-sessions-container">
         <h2>Cancelled Sessions</h2>
@@ -52,6 +54,7 @@
             {% endfor %}
         </select>
     </div>
+        <div class="summary-table">
         <table id="cancelled-sessions-table">
             <thead>
                 <tr>
@@ -68,9 +71,10 @@
                 {% endfor %}
             </tbody>
         </table>
+            </div>
         <iframe name="hiddenFrame" class="hide"></iframe>
-            <form action="{{ url_for('api.cancelled_sessions') }}" method="post" target="hiddenFrame">
-                <button type="submit" onclick="window.alert('File Downloaded')" class="dlbutton">Download Cancelled Sessions</button>
+            <form action="/api/v1/cancelled_sessions" method="post" target="hiddenFrame">
+                <button type="submit" class="dlbutton">Download Cancelled Sessions</button>
             </form>
     </div>
     <br>
