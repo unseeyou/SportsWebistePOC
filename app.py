@@ -63,3 +63,4 @@ def student_only_page():
 
 if __name__ == "__main__":
     app.run(debug=True, host="localhost")
+    app.database.close()
