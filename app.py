@@ -39,6 +39,7 @@ def upload():
             app.database.reset()
             app.database.setup()
             app.database.populate(fp)
+
             return jsonify({"success": "File uploaded successfully"})
         return jsonify({"error": f"Unsupported file type (.{file.filename.split(".")[-1]})"})
 

@@ -50,7 +50,7 @@ class Database:
         return connection
 
     def setup(self):
-        cursor = self.__conn.cursor()
+        cursor = self.get_cursor()
 
         cursor.execute("""
         create table if not exists students (
@@ -90,7 +90,7 @@ class Database:
         cursor.close()
 
     def populate(self, path: str):
-        cursor = self.__conn.cursor()
+        cursor = self.get_cursor()
         wb = op.load_workbook(path)
         sheet = wb.active
 
@@ -129,7 +129,7 @@ class Database:
         self.__conn.commit()
 
     def reset(self):
-        cursor = self.__conn.cursor()
+        cursor = self.get_cursor()
         cursor.execute("""
         DROP TABLE IF EXISTS students
         """)
@@ -143,8 +143,8 @@ class Database:
     def ping(self) -> bool:
         c = self.get_cursor()
         c.execute("SELECT * from students")
-        output = c.fetchone()[0]
-        if not output:
+        output = c.fetchone()
+        if len(output) == 0 or not output:
             return False
         else:
             return True
