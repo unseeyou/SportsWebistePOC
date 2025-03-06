@@ -1,7 +1,6 @@
 import plotly.graph_objs as go
 import plotly.io as pio
 
-import openpyxl as op
 import random
 from datetime import datetime, timedelta
 
