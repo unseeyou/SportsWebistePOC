@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="title">
+    <h1>Calendar</h1>
+    <h3>Test Page</h3>
+</div>
+<div class="description">
+    <b>{{ warning }}</b>
+    <form action="" method="post">
+        {{ form.start_date }}
+        {{ form.end_date }}
+        {{ form.applies_to }}
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}

@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, send_file
 import process_attendance_data
+import json
+import os
 
 api = Blueprint("api", __name__)
 api.url_prefix = "/api/v1"
@@ -14,7 +16,8 @@ def debug(msg):
 @api.route("/cancelled_sessions", methods=["POST"])
 def cancelled_sessions():
     data = process_attendance_data.cancelled_sessions(current_app.database)
-    with open("downloads/cancelled_sessions.json", "w") as f:
+    # print(os.listdir())
+    with open("./downloads/cancelled_sessions.json", "w") as f:
         json.dump(data, f, indent=4)
 
-    return send_file("downloads/cancelled_sessions.json", as_attachment=True)
+    return send_file("./downloads/cancelled_sessions.json", as_attachment=True)

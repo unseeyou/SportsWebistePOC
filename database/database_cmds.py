@@ -87,6 +87,16 @@ class Database:
         )
         """)
 
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS exempted_dates (
+        id integer primary key autoincrement,
+        date_start text not null, 
+        date_end text not null,
+        applies_to text not null default 'all',
+        applies_to_details text not null default 'n/a'
+        )
+        """)  # applies to all or sport or year group or team
+
         cursor.close()
 
     def populate(self, path: str):
