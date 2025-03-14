@@ -10,3 +10,5 @@
 /database/database.db
 /uploads/*
 /downloads/cancelled_sessions.json
+/.pdm-python
+/pdm.lock

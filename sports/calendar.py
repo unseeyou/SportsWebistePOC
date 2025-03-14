@@ -15,6 +15,10 @@ class CalendarForm(FlaskForm):
     submit = fields.SubmitField("Submit")
 
 
+def datetime_to_str(dt: datetime.date) -> str:
+    return f"{dt.day}/{dt.month}/{dt.year}"
+
+
 @calendar_bp.route("/calendar", methods=["GET", "POST"])
 def calendar():
     form = CalendarForm()
@@ -24,6 +28,7 @@ def calendar():
     year_groups = [(f"Year {i}", f"Year {i}") for i in range(7, 13)]
     choices = [("All", "All")] + sports + year_groups
     form.applies_to.choices = choices
+
     if form.is_submitted():
         print(form.data)
         data = {"start_date": form.start_date.data, "end_date": form.end_date.data, "applies_to": form.applies_to.data}
@@ -34,6 +39,9 @@ def calendar():
         if data["start_date"] > data["end_date"]:
             print("invalid dates")
             return render_template("calendar.html", form=form, warning="Please make sure start date is before end date!")
+
+        start, end = datetime_to_str(data["start_date"]), datetime_to_str(data["end_date"])
+
         return render_template("calendar.html", form=form, warning="Success!")
     return render_template("calendar.html", form=form, warning="")
 
