@@ -18,7 +18,9 @@ license = {text = "MIT"}
 [tool.pdm]
 distribution = false
 
-[tool.pdm.dev-dependencies]
+
+[dependency-groups]
 dev = [
     "ruff>=0.10.0",
+    "pre-commit>=4.1.0",
 ]
