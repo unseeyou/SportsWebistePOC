@@ -7,3 +7,4 @@
 /test.py
 /.env
 /client_secrets.json
+/database/database.db
