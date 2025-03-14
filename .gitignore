@@ -8,3 +8,5 @@
 /.env
 /client_secrets.json
 /database/database.db
+/uploads/*
+/downloads/cancelled_sessions.json
