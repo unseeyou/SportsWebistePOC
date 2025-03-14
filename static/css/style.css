@@ -382,3 +382,23 @@ input[type="radio"]:checked {
 .summary-table {
     margin: 3vh;
 }
+
+.calendar-select {
+    display: block;
+    align-content: center;
+    margin: auto;
+    width: fit-content;
+    outline-style: groove;
+    outline-color: palegoldenrod;
+    background-color: antiquewhite;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+    border-radius: 18px;
+}
+
+.form-option {
+    display: block;
+    justify-content: center;
+    width: fit-content;
+    padding: 1vh 2vh;
+}

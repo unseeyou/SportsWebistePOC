@@ -42,7 +42,7 @@ def calendar():
             "notes": form.notes.data,
         }
         print(data.values())
-        if None in data.values():
+        if None in list(data.values())[:-1]:
             print("insufficient data")
             return render_template(
                 "calendar.html", form=form, warning="Please fill in all fields!"
@@ -60,12 +60,22 @@ def calendar():
             datetime_to_str(data["end_date"]),
         )
         cursor = app.database.get_cursor()
-        cursor.execute(
-            """
-        INSERT INTO exempted_dates(date_start, date_end, applies_to, applies_to_details) VALUES (?, ?, ?, ?)
-        """,
-            (start, end, data["applies_to"], data["notes"]),
-        )
+        if data["notes"] == "":
+            cursor.execute(
+                """
+            INSERT INTO exempted_dates (date_start, date_end, applies_to) VALUES (?, ?, ?)
+            """,
+                (start, end, data["applies_to"]),
+            )
+        else:
+            cursor.execute(
+                """
+            INSERT INTO exempted_dates (date_start, date_end, applies_to, applies_to_details) VALUES (?, ?, ?, ?)
+            """,
+                (start, end, data["applies_to"], data["notes"]),
+            )
+        app.database.commit()
+        cursor.close()
 
         return render_template("calendar.html", form=form, warning="Success!")
     return render_template("calendar.html", form=form, warning="")

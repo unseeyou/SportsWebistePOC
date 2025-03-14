@@ -8,11 +8,29 @@
 </div>
 <div class="description">
     <b>{{ warning }}</b>
-    <form action="" method="post">
-        {{ form.start_date }}
-        {{ form.end_date }}
-        {{ form.applies_to }}
-        {{ form.submit }}
-    </form>
+    <div class="calendar-select">
+        <form action="" method="post">
+            <div class="form-option">
+            Start:
+            {{ form.start_date }}
+            </div>
+            <div class="form-option">
+            End:
+            {{ form.end_date }}
+            </div>
+            <div class="form-option">
+            Who this exemption applies to:
+            {{ form.applies_to }}
+            </div>
+            <div class="form-option">
+                OPTIONAL: Extra notes related to the exemption (i.e. reason for exemption):
+                {{ form.notes }}
+            </div>
+            <div class="form-option">
+                {{ form.submit }}
+            </div>
+        </form>
+    </div>
+    <a class="btn back-btn btn-primary" href="/">Go Back</a>
 </div>
 {% endblock %}
