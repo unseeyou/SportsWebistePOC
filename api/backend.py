@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, current_app, send_file
+from flask import Blueprint, current_app, send_file
 import process_attendance_data
 import json
-import os
 
 api = Blueprint("api", __name__)
 api.url_prefix = "/api/v1"

@@ -13,7 +13,6 @@ class DatabaseUnableToMultiThreadError(Exception):
 class Database:
     def __init__(self, path: str = DATABASE):
         def get_sqlite3_thread_safety():  # https://ricardoanderegg.com/posts/python-sqlite-thread-safety/ a tutorial script to check if it is safe to use the database over multiple threads
-
             # Mape value from SQLite's THREADSAFE to Python's DBAPI 2.0
             # threadsafety attribute.
             sqlite_threadsafe2python_dbapi = {0: 0, 2: 1, 1: 3}
@@ -34,7 +33,9 @@ class Database:
             self.__check_same_thread = False
             logging.warning("allowing database to be accessed through multiple threads")
         else:
-            logging.error("SITE WILL NOT RUN DUE TO UNSAFE THREADING SETTINGS FOR DATABASE")
+            logging.error(
+                "SITE WILL NOT RUN DUE TO UNSAFE THREADING SETTINGS FOR DATABASE"
+            )
             self.__check_same_thread = True
             raise DatabaseUnableToMultiThreadError
 
@@ -43,7 +44,9 @@ class Database:
 
     def __create_connection(self) -> sqlite3.Connection | None:
         try:
-            connection = sqlite3.connect(self.__path, check_same_thread=self.__check_same_thread)
+            connection = sqlite3.connect(
+                self.__path, check_same_thread=self.__check_same_thread
+            )
         except sqlite3.Error as err:
             connection = None
             print(err)
@@ -79,7 +82,7 @@ class Database:
         CREATE TABLE IF NOT EXISTS session_records (
         id integer primary key autoincrement,
         sport text not null,
-        date text not null, 
+        date text not null,
         start text not null,
         end text not null,
         cancelled_status text not null,
@@ -90,7 +93,7 @@ class Database:
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS exempted_dates (
         id integer primary key autoincrement,
-        date_start text not null, 
+        date_start text not null,
         date_end text not null,
         applies_to text not null default 'all',
         applies_to_details text not null default 'n/a'
@@ -105,29 +108,54 @@ class Database:
         sheet = wb.active
 
         for row in sheet.iter_rows(min_row=2, values_only=True):
-            (student_id, name, year, boarder, house, homeroom, campus, gender, birth_date, secondary,
-             email, team, activity, session, date, start_time, end_time, session_staff, attendance,
-             for_fixture, flags, cancelled_status) = row
+            (
+                student_id,
+                name,
+                year,
+                boarder,
+                house,
+                homeroom,
+                campus,
+                gender,
+                birth_date,
+                secondary,
+                email,
+                team,
+                activity,
+                session,
+                date,
+                start_time,
+                end_time,
+                session_staff,
+                attendance,
+                for_fixture,
+                flags,
+                cancelled_status,
+            ) = row
             year = year.lstrip("Year ")
-            cursor.execute("""
+            cursor.execute(
+                """
             insert or ignore into students (
             student_id, full_name, year_group, house, email
             ) VALUES (
             ?, ?, ?, ?, ?
             )
             """,
-                           (student_id, name, year, house, email),
+                (student_id, name, year, house, email),
             )
 
-            cursor.execute("""
-            insert into attendance_records (student_id, activity, attendance, date, start_time, end_time) VALUES 
+            cursor.execute(
+                """
+            insert into attendance_records (student_id, activity, attendance, date, start_time, end_time) VALUES
             (?, ?, ?, ?, ?, ?)
             """,
-                           (student_id, activity, attendance, date, start_time, end_time),
-                           )
+                (student_id, activity, attendance, date, start_time, end_time),
+            )
 
-            cursor.execute("INSERT INTO session_records (sport, cancelled_status, date, start, end, team) VALUES (?, ?, ?, ?, ?, ?)",
-                           (activity, cancelled_status, date, start_time, end_time, team))
+            cursor.execute(
+                "INSERT INTO session_records (sport, cancelled_status, date, start, end, team) VALUES (?, ?, ?, ?, ?, ?)",
+                (activity, cancelled_status, date, start_time, end_time, team),
+            )
 
         self.commit()
         cursor.close()

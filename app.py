@@ -1,10 +1,12 @@
-from flask import Flask, render_template, redirect, url_for, send_file, request, jsonify, Blueprint, session
+from flask import (
+    render_template,
+    request,
+    jsonify,
+    session,
+)
 from flask_oidc import OpenIDConnect
-import process_attendance_data
-from process_attendance_data import cancelled_sessions
 from constants import app
 from werkzeug.utils import secure_filename
-from sqlite3 import OperationalError
 import os
 
 from sports.sportsinfo import sports_bp
@@ -43,7 +45,9 @@ def upload():
             app.database.populate(fp)
             os.remove(fp)
             return jsonify({"success": "File uploaded successfully"})
-        return jsonify({"error": f"Unsupported file type (.{file.filename.split(".")[-1]})"})
+        return jsonify(
+            {"error": f"Unsupported file type (.{file.filename.split('.')[-1]})"}
+        )
 
 
 @app.route("/student-only-page")

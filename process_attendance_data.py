@@ -1,7 +1,6 @@
 import plotly.graph_objs as go
 import plotly.io as pio
 
-import random
 from datetime import datetime, timedelta
 
 
@@ -105,7 +104,9 @@ def average_session_length(database):
     # print(sessions)
 
     for sport, session_lengths in sessions.items():
-        sessions[sport] = sum(session_lengths) / len(session_lengths)  # change total to average
+        sessions[sport] = sum(session_lengths) / len(
+            session_lengths
+        )  # change total to average
 
     # print(sessions)
     try:
@@ -116,7 +117,11 @@ def average_session_length(database):
     y_axis_end = max(sessions.values()) + 10
 
     chart = go.Figure(
-        data=go.Bar(x=list(sessions.keys()), y=list(sessions.values()), name="Average Session Length"),
+        data=go.Bar(
+            x=list(sessions.keys()),
+            y=list(sessions.values()),
+            name="Average Session Length",
+        ),
     )
 
     chart.update_layout(
@@ -127,7 +132,7 @@ def average_session_length(database):
         xaxis_title="Sport",
         yaxis_title="Average Session Length (min)",
         yaxis=dict(range=[y_axis_start, y_axis_end]),
-        clickmode="event+select"
+        clickmode="event+select",
     )
 
     return chart.to_html(full_html=False, div_id="avg_session_len_chart")
@@ -140,7 +145,6 @@ def cancelled_sessions(database):
     sessions = {}
 
     for sport, cancelled_status in data:  # skip the header row
-
         if cancelled_status:
             if sport not in sessions:
                 sessions[sport] = {
@@ -153,7 +157,9 @@ def cancelled_sessions(database):
                 sessions[sport]["Cancelled"] += 1
 
     for sport in sessions:
-        sessions[sport]["Percentage"] = round((sessions[sport]["Cancelled"] * 100) / sessions[sport]["Total"], 2)
+        sessions[sport]["Percentage"] = round(
+            (sessions[sport]["Cancelled"] * 100) / sessions[sport]["Total"], 2
+        )
 
     return sessions
 

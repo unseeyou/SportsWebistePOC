@@ -6,19 +6,27 @@ homepage = Blueprint("homepage", __name__)
 
 # TODO: fix download button
 
+
 @homepage.context_processor
 def render_charts():
     try:
         print("rendering graphs")
         raw_data = process_attendance_data.student_count_per_sport(current_app.database)
-        attendance_data = [{
-            "Sport": x["sport"],
-            "Attendance": x["unique_students"],
-        } for x in raw_data]
+        attendance_data = [
+            {
+                "Sport": x["sport"],
+                "Attendance": x["unique_students"],
+            }
+            for x in raw_data
+        ]
         chart_json = process_attendance_data.attendance_bar_chart(attendance_data)
         sorted_data = sorted(attendance_data, key=lambda x: x["Sport"])
-        av_training_times = process_attendance_data.average_session_length(current_app.database)
-        cancelled_session_data = process_attendance_data.cancelled_sessions(current_app.database)
+        av_training_times = process_attendance_data.average_session_length(
+            current_app.database
+        )
+        cancelled_session_data = process_attendance_data.cancelled_sessions(
+            current_app.database
+        )
         return {
             "data": sorted_data,
             "chart_json": chart_json,
@@ -35,6 +43,7 @@ def render_charts():
             "cancelled_session_data": [],
         }
 
+
 @homepage.route("/")
 def index():
     if not current_app.oidc.user_loggedin:
@@ -44,6 +53,4 @@ def index():
     except OperationalError:
         print("Database is not working")
     finally:
-        return render_template(
-        "home.html"
-    )
+        return render_template("home.html")
