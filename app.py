@@ -40,7 +40,6 @@ def upload():
             filename = secure_filename(file.filename)
             fp = os.path.join("uploads", filename)
             file.save(fp)
-            app.database.reset()
             app.database.setup()
             app.database.populate(fp)
             os.remove(fp)

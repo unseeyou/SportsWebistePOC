@@ -22,8 +22,13 @@
         <a href=""><button type="submit">Upload</button></a>
     </form>
 </div>
-    <h2>Attendance Data</h2>
+    <div class="mx-auto h5 alert alert-danger" style="width: fit-content">DANGER!!!</div>
+    <form action="/api/v1/reset-db" method="post" enctype="multipart/form-data" id="reset-db">
+        <a href=""><button type="submit" class="btn btn-danger">RESET DB</button></a>
+    </form>
+
     <div class="summary-table">
+        <h2>Attendance Data</h2>
         <table>
             <thead>
                 <tr>

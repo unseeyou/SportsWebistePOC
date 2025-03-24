@@ -109,8 +109,8 @@ class Database:
 
         for row in sheet.iter_rows(min_row=2, values_only=True):
             (
-                student_id,
                 name,
+                student_id,
                 year,
                 boarder,
                 house,
@@ -172,6 +172,8 @@ class Database:
         DROP TABLE IF EXISTS students
         """)
         cursor.execute("DROP TABLE IF EXISTS attendance_records")
+        cursor.execute("DROP TABLE IF EXISTS session_records")
+        cursor.execute("DROP TABLE IF EXISTS exempted_dates")
         self.commit()
         cursor.close()
 
