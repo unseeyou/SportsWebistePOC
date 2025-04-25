@@ -54,3 +54,10 @@ def index():
         print("Database is not working")
     finally:
         return render_template("home.html")
+
+
+@homepage.route("/database-view")
+def database_view():
+    if not current_app.oidc.user_loggedin:
+        return redirect("/student-only-page")
+    return render_template("db-view.html")
