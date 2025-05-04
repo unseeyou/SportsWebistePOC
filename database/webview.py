@@ -12,11 +12,12 @@ def database_view():
     cursor = app.database.get_cursor()
     cursor.execute("SELECT * FROM students")
     data = cursor.fetchall()
+    data = sorted(data, key=lambda x: x[1].split()[-1])
     cursor.close()
 
     pages = []  # split data in 75 rows per page
-    for i in range(0, len(data), 75):
-        pages.append(data[i : i + 75])
+    for i in range(0, len(data), 15):
+        pages.append(data[i : i + 15])
 
     page = request.args.get("pg", 1, type=int)
 

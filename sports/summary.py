@@ -6,7 +6,7 @@ from sqlite3 import OperationalError
 
 homepage = Blueprint("homepage", __name__)
 
-# TODO: fix download button
+# TODO: Optimise loading of home page
 
 
 @homepage.context_processor
