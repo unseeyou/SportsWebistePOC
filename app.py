@@ -14,6 +14,7 @@ from sports.sportsinfo import sports_bp
 from sports.summary import homepage
 from sports.calendar import calendar_bp
 from api.backend import api
+from database.webview import db
 
 load_dotenv()
 app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
@@ -25,6 +26,7 @@ app.register_blueprint(sports_bp)
 app.register_blueprint(homepage)
 app.register_blueprint(api)
 app.register_blueprint(calendar_bp)
+app.register_blueprint(db)
 
 
 @app.route("/upload", methods=["GET", "POST"])

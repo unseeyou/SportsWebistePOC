@@ -11,32 +11,33 @@
     <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First <button>test</button></th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Student ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Year Group</th>
+      <th scope="col">House</th>
     </tr>
   </thead>
   <tbody>
+    {% for item in data %}
     <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th scope="row">{{ item[0] }}</th>
+      <td>{{ item[1] }}</td>
+      <td>{{ item[2] }}</td>
+      <td>{{ item[3] }}</td>
+      <td>{{ item[4] }}</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    {% endfor %}
   </tbody>
 </table>
 
+  <div class="pagination">
+    <a href="/database-view?pg=1&refresh_db=false"><button>First</button></a>
+    <a href="/database-view?pg={{ page - 1 }}&refresh_db=false"><button>Previous</button></a>
+    <a href="/database-view?pg={{ page }}&refresh_db=true"><button>Reload Database</button></a>
+    <a href="/database-view?pg={{ page + 1 }}&refresh_db=false"><button>Next</button></a>
+    <a href="/database-view?pg={{ pages }}&refresh_db=false"><button>Last</button></a>
+  </div>
+  <p class="pagination">( page {{ page }} of {{ pages }} )</p>
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, current_app, redirect
 import process_attendance_data
+from constants import app
 from sqlite3 import OperationalError
 
 
@@ -11,7 +12,7 @@ homepage = Blueprint("homepage", __name__)
 @homepage.context_processor
 def render_charts():
     try:
-        print("rendering graphs")
+        app.logger.info("rendering graphs")
         raw_data = process_attendance_data.student_count_per_sport(current_app.database)
         attendance_data = [
             {
@@ -55,11 +56,3 @@ def index():
         print("Database is not working")
     finally:
         return render_template("home.html")
-
-
-@homepage.route("/database-view")
-def database_view():
-    if not current_app.oidc.user_loggedin:
-        return redirect("/student-only-page")
-
-    return render_template("db-view.html")

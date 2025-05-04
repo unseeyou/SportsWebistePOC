@@ -402,3 +402,14 @@ input[type="radio"]:checked {
     width: fit-content;
     padding: 1vh 2vh;
 }
+
+.pagination {
+    justify-content: center;
+}
+
+.pagination button {
+    margin: 1vh;
+    background-color: #343a71;
+    font-size: medium;
+    color: white;
+}
