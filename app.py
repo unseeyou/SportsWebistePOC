@@ -7,6 +7,7 @@ from flask import (
 from flask_oidc import OpenIDConnect
 from constants import app
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
 import os
 
 from sports.sportsinfo import sports_bp
@@ -14,11 +15,12 @@ from sports.summary import homepage
 from sports.calendar import calendar_bp
 from api.backend import api
 
+load_dotenv()
 app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
 app.config["OIDC_SCOPES"] = "openid profile"
 oidc = OpenIDConnect(app, prefix="/oidc/")
 app.oidc = oidc
-app.secret_key = "super-secret-key"
+app.secret_key = os.getenv("WEBAPP_SECRET_KEY")
 app.register_blueprint(sports_bp)
 app.register_blueprint(homepage)
 app.register_blueprint(api)
@@ -47,6 +49,7 @@ def upload():
         return jsonify(
             {"error": f"Unsupported file type (.{file.filename.split('.')[-1]})"}
         )
+    return None
 
 
 @app.route("/student-only-page")

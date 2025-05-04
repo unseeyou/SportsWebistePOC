@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, current_app, redirect
 import process_attendance_data
 from sqlite3 import OperationalError
 
+
 homepage = Blueprint("homepage", __name__)
 
 # TODO: fix download button
@@ -60,4 +61,5 @@ def index():
 def database_view():
     if not current_app.oidc.user_loggedin:
         return redirect("/student-only-page")
+
     return render_template("db-view.html")
