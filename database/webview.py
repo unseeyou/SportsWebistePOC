@@ -1,7 +1,13 @@
 from flask import Blueprint, render_template, current_app, redirect, request
 from constants import app
+from sqlite3 import OperationalError
 
 db = Blueprint("db", __name__)
+
+
+@db.errorhandler(OperationalError)
+def db_missing(err):
+    return "The database cannot be reached. Is it empty?"
 
 
 @db.route("/database-view")

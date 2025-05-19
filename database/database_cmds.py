@@ -174,6 +174,7 @@ class Database:
         cursor.execute("DROP TABLE IF EXISTS attendance_records")
         cursor.execute("DROP TABLE IF EXISTS session_records")
         cursor.execute("DROP TABLE IF EXISTS exempted_dates")
+        cursor.execute("DROP TABLE IF EXISTS students")
         self.commit()
         cursor.close()
 

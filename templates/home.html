@@ -19,7 +19,7 @@
     <form action="/upload" method="post" enctype="multipart/form-data" id="file-upload">
         <label for="file">Select an Excel file to upload:</label>
         <input type="file" id="file" name="file" accept=".xlsx" required>
-        <a href=""><button type="submit">Upload</button></a>
+        <button type="submit" onclick="alert('Please wait a bit for the entire database to upload!')">Upload</button>
     </form>
         <a href="/database-view" class="btn btn-primary">View Database</a>
 </div>

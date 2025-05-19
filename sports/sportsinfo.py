@@ -30,3 +30,4 @@ def sports_info_page(sport_name):
             pie_chart=pie_chart,
             student_pie=student_pie,
         )
+    return None

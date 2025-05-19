@@ -4,7 +4,6 @@ from flask import (
     jsonify,
     session,
 )
-from flask_oidc import OpenIDConnect
 from constants import app
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
@@ -15,18 +14,16 @@ from sports.summary import homepage
 from sports.calendar import calendar_bp
 from api.backend import api
 from database.webview import db
+from student.portal import student_portal
 
 load_dotenv()
-app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
-app.config["OIDC_SCOPES"] = "openid profile"
-oidc = OpenIDConnect(app, prefix="/oidc/")
-app.oidc = oidc
 app.secret_key = os.getenv("WEBAPP_SECRET_KEY")
 app.register_blueprint(sports_bp)
 app.register_blueprint(homepage)
 app.register_blueprint(api)
 app.register_blueprint(calendar_bp)
 app.register_blueprint(db)
+app.register_blueprint(student_portal)
 
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -56,6 +53,7 @@ def upload():
 
 @app.route("/student-only-page")
 def student_only_page():
+    oidc = app.oidc
     if oidc.user_loggedin:
         oidc_profile = session["oidc_auth_profile"]
 
