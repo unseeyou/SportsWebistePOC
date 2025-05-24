@@ -74,7 +74,8 @@ class Database:
         date text not null,
         start_time text not null,
         end_time text not null,
-        absence_reason text default 'n/a'
+        absence_reason text default 'n/a',
+        cancelled_status text default 'n/a'
         )
         """)
 
@@ -146,10 +147,18 @@ class Database:
 
             cursor.execute(
                 """
-            insert into attendance_records (student_id, activity, attendance, date, start_time, end_time) VALUES
-            (?, ?, ?, ?, ?, ?)
+            insert into attendance_records (student_id, activity, attendance, date, start_time, end_time, cancelled_status) VALUES
+            (?, ?, ?, ?, ?, ?, ?)
             """,
-                (student_id, activity, attendance, date, start_time, end_time),
+                (
+                    student_id,
+                    activity,
+                    attendance,
+                    date,
+                    start_time,
+                    end_time,
+                    cancelled_status,
+                ),
             )
 
             cursor.execute(

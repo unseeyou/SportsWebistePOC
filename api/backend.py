@@ -1,4 +1,4 @@
-from flask import Blueprint, send_file
+from flask import Blueprint, send_file, jsonify, request
 from constants import app
 import process_attendance_data
 import json
@@ -27,3 +27,23 @@ def cancelled_sessions():
 def reset_db():
     app.database.reset()
     return "Database reset"
+
+
+@api.route("/autocomplete", methods=["GET"])
+def autocomplete():
+    term = request.args.get("term", "")
+
+    cursor = app.database.get_cursor()
+    cursor.execute(
+        """
+        SELECT DISTINCT student_id
+        FROM students
+        WHERE student_id LIKE ?
+        LIMIT 10;
+    """,
+        (f"{term}%",),
+    )
+    results = [row["student_id"] for row in cursor.fetchall()]
+    cursor.close()
+
+    return jsonify(results)
