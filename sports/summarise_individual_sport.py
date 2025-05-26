@@ -66,7 +66,7 @@ def summarise_sport_individual(sport_name: str, student_id: int):
         elif attendance == "Unexplained absence":
             formatted_data["Unexplained"] += 1
 
-    print(formatted_data)
+    # print(formatted_data)
 
     fig = px.pie(
         title=f"{student_id}'s Attendance Statistics",

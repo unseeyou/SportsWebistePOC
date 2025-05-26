@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                 {% for item in data %}
-                <tr onclick="window.location.replace('/sport/{{ item.Sport }}')">
+                <tr onclick="window.location.replace('/loading?next={{ url_for('SportsBP.sports_info_page', sport_name=item.Sport) }}')">
                     <td>{{ item.Sport }}</td>
                     <td>{{ item.Attendance }}</td>
                 </tr>

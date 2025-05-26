@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app, redirect
+from flask import Blueprint, render_template, current_app
 import process_attendance_data
 from constants import app
 from sqlite3 import OperationalError
@@ -32,8 +32,6 @@ def render_charts():
 
 @homepage.route("/")
 def index():
-    if not current_app.oidc.user_loggedin:
-        return redirect("/student-only-page")
     try:
         current_app.database.ping()
     except OperationalError:

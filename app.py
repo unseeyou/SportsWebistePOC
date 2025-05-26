@@ -3,10 +3,12 @@ from flask import (
     request,
     jsonify,
     session,
+    redirect,
 )
 from constants import app
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 import os
 
 from sports.sportsinfo import sports_bp
@@ -67,6 +69,25 @@ def student_only_page():
         # The argument to this function is what route we want the user to be
         # returned to after completing the login. In this case, this page.
         return oidc.redirect_to_auth_server("/")
+
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(target)
+    return (
+        test_url.scheme in ("http", "https")
+        and ref_url.netloc == test_url.netloc
+        or not test_url.netloc
+    )
+
+
+@app.route("/loading")
+def loading():
+    next_pg = request.args.get("next")
+    if next_pg and is_safe_url(next_pg):
+        return render_template("loading.html", next_pg=next_pg)
+    app.logger.error("Refusing to load unsafe URL: %s", next_pg)
+    return redirect("/")
 
 
 if __name__ == "__main__":

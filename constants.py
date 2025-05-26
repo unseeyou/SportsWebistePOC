@@ -10,6 +10,7 @@ class CustomApp(Flask):
         self.config["OIDC_SCOPES"] = "openid profile"
         self.database: Database = Database()
         self.oidc: OpenIDConnect = OpenIDConnect(self, prefix="/oidc/")
+        self.logger.debug("initializing app")
 
 
 app = CustomApp("app")

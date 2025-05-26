@@ -12,11 +12,6 @@ class DatabaseUnableToMultiThreadError(Exception):
 # noinspection SqlResolve
 class Database:
     def __init__(self, path: str = DATABASE):
-        logging.basicConfig(
-            format="%(asctime)s - %(levelname)s - %(message)s",
-            level=logging.DEBUG,
-        )
-
         def get_sqlite3_thread_safety():  # https://ricardoanderegg.com/posts/python-sqlite-thread-safety/ a tutorial script to check if it is safe to use the database over multiple threads
             # Mape value from SQLite's THREADSAFE to Python's DBAPI 2.0
             # threadsafety attribute.
