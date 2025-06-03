@@ -45,8 +45,8 @@ def check_basic(students: list[str], sport: str):
     for student in students:
         rate = get_student_attendance_percentage_basic(student, sport)
         if rate < 0.85:
-            need_more_check.append((student, rate * 100))
-    return need_more_check
+            need_more_check.append((student, round(rate * 100, 2)))
+    return sorted(need_more_check, key=lambda x: x[1])
 
 
 def get_all_students_from_sport(sport: str):

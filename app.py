@@ -85,6 +85,7 @@ def is_safe_url(target):
 def loading():
     next_pg = request.args.get("next")
     if next_pg and is_safe_url(next_pg):
+        # return redirect(next_pg)
         return render_template("loading.html", next_pg=next_pg)
     app.logger.error("Refusing to load unsafe URL: %s", next_pg)
     return redirect("/")

@@ -290,6 +290,11 @@ input[type="radio"]:checked {
     padding: 1vh;
     display: none;
     margin: 0 auto 2vh;
+    background-color: #343a71;
+}
+
+.topbutton:hover {
+    background-color: cornflowerblue;
 }
 
 .cards {
