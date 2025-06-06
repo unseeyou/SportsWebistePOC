@@ -1,14 +1,18 @@
-from flask import Blueprint, render_template, current_app, redirect, request
+from flask import Blueprint, render_template, request
 from constants import app
+from sqlite3 import OperationalError
 
 db = Blueprint("db", __name__)
 
 
+@db.errorhandler(OperationalError)
+def db_missing(err):
+    app.logger.error(err)
+    return "The database cannot be reached. Is it empty?"
+
+
 @db.route("/database-view")
 def database_view():
-    if not current_app.oidc.user_loggedin:
-        return redirect("/student-only-page")
-
     cursor = app.database.get_cursor()
     cursor.execute("SELECT * FROM students")
     data = cursor.fetchall()

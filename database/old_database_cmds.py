@@ -1,5 +1,5 @@
 import sqlite3
-import pandas as pd
+import openpyxl as op
 import logging
 
 DATABASE = "database/database.db"
@@ -31,7 +31,7 @@ class Database:
 
         if get_sqlite3_thread_safety() == 3:
             self.__check_same_thread = False
-            logging.info("allowing database to be accessed through multiple threads")
+            logging.warning("allowing database to be accessed through multiple threads")
         else:
             logging.error(
                 "SITE WILL NOT RUN DUE TO UNSAFE THREADING SETTINGS FOR DATABASE"
@@ -53,7 +53,6 @@ class Database:
         return connection
 
     def setup(self):
-        logging.debug("setting up db")
         cursor = self.get_cursor()
 
         cursor.execute("""
@@ -71,7 +70,6 @@ class Database:
         id integer primary key autoincrement,
         student_id integer not null,
         activity text not null,
-        session text not null,
         attendance text not null,
         date text not null,
         start_time text not null,
@@ -106,18 +104,11 @@ class Database:
         cursor.close()
 
     def populate(self, path: str):
-        logging.debug("populating db")
-        self.setup()
         cursor = self.get_cursor()
-        wb = pd.read_excel(path)
-        # print(wb)
-        # Index(['Name', 'Student ID', 'Year group', 'Boarder', 'House', 'Homeroom',
-        #        'Campus', 'Gender', 'Birth date', 'Secondary Sis Id', 'Email', 'Team',
-        #        'Activity', 'Session', 'Date', 'Start time', 'End time',
-        #        'Session staff', 'Attendance', 'For a Fixture?', 'Flags', 'Cancelled'],
-        #       dtype='object')
-        for row in wb.iterrows():
-            # Example:print(row[1].get("Start time"))
+        wb = op.load_workbook(path)
+        sheet = wb.active
+
+        for row in sheet.iter_rows(min_row=2, values_only=True):
             (
                 name,
                 student_id,
@@ -141,15 +132,8 @@ class Database:
                 for_fixture,
                 flags,
                 cancelled_status,
-            ) = row[1].values
-
+            ) = row
             year = year.lstrip("Year ")
-
-            # convert Timestamps to strings
-            date = str(date)
-            start_time = str(start_time)
-            end_time = str(end_time)
-
             cursor.execute(
                 """
             insert or ignore into students (
@@ -163,13 +147,12 @@ class Database:
 
             cursor.execute(
                 """
-            insert into attendance_records (student_id, activity, session, attendance, date, start_time, end_time, cancelled_status) VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?)
+            insert into attendance_records (student_id, activity, attendance, date, start_time, end_time, cancelled_status) VALUES
+            (?, ?, ?, ?, ?, ?, ?)
             """,
                 (
                     student_id,
                     activity,
-                    session,
                     attendance,
                     date,
                     start_time,
@@ -178,17 +161,10 @@ class Database:
                 ),
             )
 
-            try:
-                cursor.execute(
-                    "INSERT INTO session_records (sport, cancelled_status, date, start, end, team) VALUES (?, ?, ?, ?, ?, ?)",
-                    (activity, cancelled_status, date, start_time, end_time, team),
-                )
-            except sqlite3.IntegrityError:
-                team = "n/a"
-                cursor.execute(
-                    "INSERT INTO session_records (sport, cancelled_status, date, start, end, team) VALUES (?, ?, ?, ?, ?, ?)",
-                    (activity, cancelled_status, date, start_time, end_time, team),
-                )
+            cursor.execute(
+                "INSERT INTO session_records (sport, cancelled_status, date, start, end, team) VALUES (?, ?, ?, ?, ?, ?)",
+                (activity, cancelled_status, date, start_time, end_time, team),
+            )
 
         self.commit()
         cursor.close()
@@ -200,7 +176,6 @@ class Database:
         self.__conn.commit()
 
     def reset(self):
-        logging.debug("resetting db")
         cursor = self.get_cursor()
         cursor.execute("""
         DROP TABLE IF EXISTS students

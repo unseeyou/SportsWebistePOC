@@ -9,7 +9,25 @@
 
     <div class="chart">{{ pie_chart|safe }}</div>
 
-    Student ID Lookup
+    <h3>Naughty List</h3>
+    <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Attendance (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in slackers %}
+                <tr>
+                    <td>{{ student[0] }}</td>
+                    <td>{{ student[1] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+
+    <h4><br>Student ID Lookup</h4>
     <form id="student-sports-lookup" action="/sport/{{ sport_name }}" method="post">
         <label for="studentID">Enter Student ID </label>
         <input type="text" name="studentID" id="studentID">

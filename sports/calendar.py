@@ -29,6 +29,7 @@ def calendar():
     cursor = app.database.get_cursor()
     cursor.execute("SELECT activity FROM attendance_records")
     sports = [(i[0], i[0]) for i in set(cursor.fetchall())]
+    cursor.close()
     year_groups = [(f"Year {i}", f"Year {i}") for i in range(7, 13)]
     choices = [("All", "All")] + sports + year_groups
     form.applies_to.choices = choices

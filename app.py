@@ -3,11 +3,12 @@ from flask import (
     request,
     jsonify,
     session,
+    redirect,
 )
-from flask_oidc import OpenIDConnect
 from constants import app
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 import os
 
 from sports.sportsinfo import sports_bp
@@ -15,18 +16,16 @@ from sports.summary import homepage
 from sports.calendar import calendar_bp
 from api.backend import api
 from database.webview import db
+from student.portal import student_portal
 
 load_dotenv()
-app.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
-app.config["OIDC_SCOPES"] = "openid profile"
-oidc = OpenIDConnect(app, prefix="/oidc/")
-app.oidc = oidc
 app.secret_key = os.getenv("WEBAPP_SECRET_KEY")
 app.register_blueprint(sports_bp)
 app.register_blueprint(homepage)
 app.register_blueprint(api)
 app.register_blueprint(calendar_bp)
 app.register_blueprint(db)
+app.register_blueprint(student_portal)
 
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -56,6 +55,7 @@ def upload():
 
 @app.route("/student-only-page")
 def student_only_page():
+    oidc = app.oidc
     if oidc.user_loggedin:
         oidc_profile = session["oidc_auth_profile"]
 
@@ -69,6 +69,26 @@ def student_only_page():
         # The argument to this function is what route we want the user to be
         # returned to after completing the login. In this case, this page.
         return oidc.redirect_to_auth_server("/")
+
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(target)
+    return (
+        test_url.scheme in ("http", "https")
+        and ref_url.netloc == test_url.netloc
+        or not test_url.netloc
+    )
+
+
+@app.route("/loading")
+def loading():
+    next_pg = request.args.get("next")
+    if next_pg and is_safe_url(next_pg):
+        # return redirect(next_pg)
+        return render_template("loading.html", next_pg=next_pg)
+    app.logger.error("Refusing to load unsafe URL: %s", next_pg)
+    return redirect("/")
 
 
 if __name__ == "__main__":

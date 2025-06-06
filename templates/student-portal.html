@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+<div class="title">
+    <h1>Student</h1>
+    <h3>Portal</h3>
+</div>
+<div class="description">
+    {% if not logged_in %}
+        <div class="login-prompt">
+            Please log in through the school portal to continue!
+            <a href="/student/login"><div class="login-btn btn btn-primary">LOG IN</div></a>
+        </div>
+    {% else %}
+    <h4>WELCOME, {{ name }}</h4>
+    <a href="/student/logout"><div class="logout-btn btn btn-secondary">Logout</div></a>
+    {% endif %}
+</div>
+{% endblock %}

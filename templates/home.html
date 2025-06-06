@@ -4,7 +4,7 @@
 {% block content %}
 <div class="title" xmlns="http://www.w3.org/1999/html">
     <h1>Sports</h1>
-    <h3>Attendance Records</h3>
+    <h3>Admin</h3>
 </div>
 
 <div class="description">
@@ -19,7 +19,7 @@
     <form action="/upload" method="post" enctype="multipart/form-data" id="file-upload">
         <label for="file">Select an Excel file to upload:</label>
         <input type="file" id="file" name="file" accept=".xlsx" required>
-        <a href=""><button type="submit">Upload</button></a>
+        <button type="submit" onclick="alert('Please wait a bit for the entire database to upload!')">Upload</button>
     </form>
         <a href="/database-view" class="btn btn-primary">View Database</a>
 </div>
@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                 {% for item in data %}
-                <tr onclick="window.location.replace('/sport/{{ item.Sport }}')">
+                <tr onclick="window.location.replace('/loading?next={{ url_for('SportsBP.sports_info_page', sport_name=item.Sport) }}')">
                     <td>{{ item.Sport }}</td>
                     <td>{{ item.Attendance }}</td>
                 </tr>
@@ -48,68 +48,5 @@
         </table>
         <br>
     </div>
-
-    <div class="cancelled-sessions-container">
-        <h2>Cancelled Sessions</h2>
-        <div class="dropdown">
-        <label for="cancelled-filter">Filter by sport: </label>
-        <select id="cancelled-filter" onchange="filterCancelledTable()">
-            <option value="all">All</option>
-            {% for item in sports %}
-            <option class="dropdown-item list-group-item" value="{{ item.replace(" ", "-") }}">{{ item }}</option>
-            {% endfor %}
-        </select>
-    </div>
-        <div class="summary-table">
-        <table id="cancelled-sessions-table">
-            <thead>
-                <tr>
-                    <th>Sport</th>
-                    <th>Cancelled Sessions (%)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cancelled_session_data %}
-                <tr class="cancelled-sessions-row" onclick="window.location.replace('/sport/{{ item }}')">
-                    <td>{{ item }}</td>
-                    <td>{{ cancelled_session_data[item]["Percentage"] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-            </div>
-        <iframe name="hiddenFrame" class="hide"></iframe>
-            <form action="/api/v1/cancelled_sessions" method="post">
-                <button type="submit" class="dlbutton">Download Cancelled Sessions</button>
-            </form>
-    </div>
-    <br>
-
-        <div id="chart">
-            {{ chart_html|safe}}
-        </div>
-
-        <script>
-            const chartData = {{ chart_json|safe}};
-            Plotly.newPlot('chart', chartData);
-
-            // Add click event listener
-            document.getElementById('chart').on('plotly_click', function(event) {
-                const sport = event.points[0].x; // Get the sport name from the clicked bar
-                window.location.href = `/sport/${sport}`;
-            });
-        </script>
-
-            <div id="avg-training-times">
-                <h2>Average Training Times</h2>
-                {{ av_training_times|safe }}
-                <script>
-            // Add click event listener
-            document.getElementById('avg_session_len_chart').on('plotly_click', function(event) {
-                const sport = event.points[0].x; // Get the sport name from the clicked bar
-                window.location.href = `/sport/${sport}`;
-            });
-        </script>
-            </div>
 </div>
 {% endblock %}
