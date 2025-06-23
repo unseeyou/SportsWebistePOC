@@ -9,8 +9,7 @@ sports_bp = Blueprint("SportsBP", __name__)
 
 @sports_bp.route("/sport/<sport_name>", methods=["GET", "POST"])
 def sports_info_page(sport_name):
-    students = checks.get_all_students_from_sport(sport_name)
-    slackers = checks.check_basic(students, sport_name)
+    slackers = checks.fast_sql_query(sport_name)
 
     if request.method == "GET":
         # print(checks.get_all_students_from_sport(sport_name))

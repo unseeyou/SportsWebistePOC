@@ -30,6 +30,7 @@ def student_home():
         student_id = oidc_profile["student_id"]
         if str(student_id) == "443172505":
             student_id = "123456789"
+        # END OF TESTING CODEBLOCK
 
         try:
             cursor.execute("SELECT * FROM students WHERE student_id = ?", (student_id,))

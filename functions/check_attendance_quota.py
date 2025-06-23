@@ -9,17 +9,42 @@ from constants import app
 def get_student_attendance_percentage_basic(student_id: str, sport: str):
     cursor = app.database.get_cursor()
     cursor.execute(
-        "SELECT COUNT(*) FROM attendance_records WHERE student_id = ? AND attendance = 'Present' AND instr(activity, ?) collate NOCASE",
+        "SELECT COUNT(activity) FROM attendance_records WHERE student_id = ? AND attendance = 'Present' AND instr(activity, ?) collate NOCASE",
         (student_id, sport),
     )
     present = cursor.fetchone()[0]
     cursor.execute(
-        "SELECT COUNT(*) FROM attendance_records WHERE student_id = ? AND cancelled_status != 'Yes' AND instr(activity, ?) collate NOCASE",
+        "SELECT COUNT(activity) FROM attendance_records WHERE student_id = ? AND cancelled_status != 'Yes' AND instr(activity, ?) AND NOT instr(session, 'optional') collate NOCASE",
         (student_id, sport),
     )
     total = cursor.fetchone()[0]
     cursor.close()
     return round(present / total, 4)
+
+
+def fast_sql_query(sport: str, naughty_list: bool = True):
+    cursor = app.database.get_cursor()
+    cursor.execute(
+        """
+        SELECT student_id, activity,
+            CASE
+                WHEN COUNT(*) > 0 THEN
+                    SUM(CASE WHEN attendance = 'Present' AND instr(lower(activity), lower(?)) THEN 1 ELSE 0 END) * 100 / SUM(CASE WHEN instr(lower(activity), lower(?)) AND NOT instr(lower(session), 'optional') THEN 1 ELSE 0 END)
+                ELSE 0
+            END AS attendance_percent
+        FROM attendance_records
+        GROUP BY student_id
+    """,
+        (sport, sport),
+    )
+    # filter exempted dated: WHERE date(date) NOT IN (SELECT date from exempted_dates)
+    results = cursor.fetchall()
+    cursor.close()
+    results = [i for i in results if sport.lower() in i[1].lower()]
+    results.sort(key=lambda x: x[2])
+    if naughty_list:
+        return [(a, c) for a, b, c in results if c < 80]
+    return [(a, c) for a, b, c in results]
 
 
 def get_exclusion_dates_for_student(student_id: str):
@@ -41,11 +66,16 @@ def get_exclusion_dates_for_student(student_id: str):
 
 
 def check_basic(students: list[str], sport: str):
-    need_more_check = []
-    for student in students:
-        rate = get_student_attendance_percentage_basic(student, sport)
-        if rate < 0.85:
-            need_more_check.append((student, round(rate * 100, 2)))
+    need_more_check = [
+        (
+            student,
+            round(get_student_attendance_percentage_basic(student, sport) * 100, 2),
+        )
+        if get_student_attendance_percentage_basic(student, sport) < 0.8
+        else None
+        for student in students
+    ]
+    need_more_check = [i for i in need_more_check if i is not None]
     return sorted(need_more_check, key=lambda x: x[1])
 
 
