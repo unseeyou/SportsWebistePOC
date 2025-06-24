@@ -23,10 +23,11 @@ def get_student_attendance_percentage_basic(student_id: str, sport: str):
 
 
 def fast_sql_query(sport: str, naughty_list: bool = True):
+    print(sport)
     cursor = app.database.get_cursor()
     cursor.execute(
         """
-        SELECT student_id, activity,
+        SELECT student_id,
             CASE
                 WHEN COUNT(*) > 0 THEN
                     SUM(CASE WHEN attendance = 'Present' AND instr(lower(activity), lower(?)) THEN 1 ELSE 0 END) * 100 / SUM(CASE WHEN instr(lower(activity), lower(?)) AND NOT instr(lower(session), 'optional') THEN 1 ELSE 0 END)
@@ -38,13 +39,16 @@ def fast_sql_query(sport: str, naughty_list: bool = True):
         (sport, sport),
     )
     # filter exempted dated: WHERE date(date) NOT IN (SELECT date from exempted_dates)
+    # TODO: change exempted_dates to store every single date and time (when relevant)
+    # instead of range for easier sql filter
     results = cursor.fetchall()
     cursor.close()
-    results = [i for i in results if sport.lower() in i[1].lower()]
-    results.sort(key=lambda x: x[2])
+    print(f"{results=}\n{len(results)}")
+    results = [i for i in results if i[1]]
+    results.sort(key=lambda x: x[1])
     if naughty_list:
-        return [(a, c) for a, b, c in results if c < 80]
-    return [(a, c) for a, b, c in results]
+        return [(a, c) for a, c in results if c < 80]
+    return [(a, c) for a, c in results]
 
 
 def get_exclusion_dates_for_student(student_id: str):
