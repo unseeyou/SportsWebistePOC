@@ -66,6 +66,7 @@ def get_exclusion_dates_for_student(student_id: str):
     )
 
     exemptions = cursor.fetchall()
+    cursor.close()
     return exemptions if len(exemptions) > 0 else ["no data"]
 
 
@@ -89,4 +90,24 @@ def get_all_students_from_sport(sport: str):
         "SELECT student_id FROM attendance_records WHERE instr(activity, ?) collate NOCASE",
         (sport,),
     )
+    cursor.close()
     return list(set([i[0] for i in cursor.fetchall()]))
+
+
+def get_all_sports():
+    cursor = app.database.get_cursor()
+    cursor.execute("SELECT DISTINCT activity from attendance_records")
+    results = cursor.fetchall()
+    cursor.close()
+    return [r[0] for r in results]
+
+
+def get_student_sports(student_id: str):
+    cursor = app.database.get_cursor()
+    cursor.execute(
+        "SELECT DISTINCT activity from attendance_records WHERE student_id = ?",
+        (student_id,),
+    )
+    results = cursor.fetchall()
+    cursor.close()
+    return [r[0] for r in results]

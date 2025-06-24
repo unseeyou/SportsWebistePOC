@@ -16,7 +16,7 @@ def database_view():
     cursor = app.database.get_cursor()
     cursor.execute("SELECT * FROM students")
     data = cursor.fetchall()
-    data = sorted(data, key=lambda x: x[1].split()[-1])
+    data = sorted(data, key=lambda x: (x[3], x[1].split()[-1]))
     cursor.close()
 
     pages = []  # split data in 75 rows per page

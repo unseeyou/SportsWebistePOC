@@ -13,8 +13,14 @@
             <a href="/student/login"><div class="login-btn btn btn-primary">LOG IN</div></a>
         </div>
     {% else %}
-    <h4>WELCOME, {{ name }}</h4>
-    <a href="/student/logout"><div class="logout-btn btn btn-secondary">Logout</div></a>
+    <h4>Welcome, {{ name }}!</h4>
+    <h5>Attendance Breakdown</h5>
+    {% for chart in charts %}
+        <h6>{{ chart[0] }}</h6>
+        <div class="student-chart">{{ chart[1]|safe }}</div>
+    {% endfor %}
+    <a class="btn btn-primary" href="https://student.sbhs.net.au/absences/extra-curricular" target="_blank">Register a Sports Absence</a>
+    <a href="/student/logout"><div class="logout-btn btn btn-danger">Logout</div></a>
     {% endif %}
 </div>
 {% endblock %}

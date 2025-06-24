@@ -7,6 +7,8 @@ import sqlite3
 
 from flask import Blueprint, render_template, session, redirect, url_for
 from constants import app as custom_app
+from sports import summarise_individual_sport
+from functions.check_attendance_quota import get_student_sports
 
 student_portal = Blueprint("StudentPortal", __name__)
 student_portal.url_prefix = "/student"
@@ -27,16 +29,30 @@ def student_home():
         cursor = custom_app.database.get_cursor()
 
         # TODO: THIS IS JUST FOR TESTING!!! REMOVE FOR PROD!!!
-        student_id = oidc_profile["student_id"]
-        if str(student_id) == "443172505":
+        student_id = str(oidc_profile["student_id"])
+        if student_id == "443172505":
             student_id = "123456789"
         # END OF TESTING CODEBLOCK
+
+        sports = get_student_sports(student_id)
+        charts = []
+        for sport in sports:
+            charts.append(
+                (
+                    sport,
+                    summarise_individual_sport.summarise_sport_individual(
+                        sport, int(student_id)
+                    ),
+                )
+            )
 
         try:
             cursor.execute("SELECT * FROM students WHERE student_id = ?", (student_id,))
             result = cursor.fetchall()[0]
             cursor.close()
-            return render_template(template, logged_in=True, name=result[1])
+            return render_template(
+                template, logged_in=True, name=result[1], charts=charts
+            )
         except sqlite3.OperationalError:
             custom_app.logger.error("Unable to reach database")
             cursor.close()
