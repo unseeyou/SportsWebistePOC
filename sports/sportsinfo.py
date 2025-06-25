@@ -13,7 +13,7 @@ sports_bp = Blueprint("SportsBP", __name__)
 def sports_info_page(sport_name):
     slackers = checks.fast_sql_query(sport_name)
     app.logger.debug(f"{slackers=}")
-    n = 10
+    n = 16
     structured_slackers = [slackers[i : i + n] for i in range(0, len(slackers), n)]
     app.logger.debug(f"{structured_slackers=}")
     slackers = structured_slackers

@@ -2,14 +2,18 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-<div class="title">
-    <h1>Student</h1>
-    <h3>Portal</h3>
+<div class="toolbar">
+    <div class="title" xmlns="http://www.w3.org/1999/html">
+        <h1>SBHS Sports</h1>
+        <h3>Student Portal - Home</h3>
+    </div>
+    <div class="menu-buttons"><a class="btn btn-secondary" href="/student">Go To Main Page</a></div>
 </div>
+
 <div class="description">
     {% if not logged_in %}
         <div class="login-prompt">
-            Please log in through the school portal to continue!
+            <p>Please log in through the school portal to continue!</p>
             <a href="/student/login"><div class="login-btn btn btn-primary">LOG IN</div></a>
         </div>
     {% else %}

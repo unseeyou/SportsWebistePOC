@@ -2,10 +2,14 @@
 {% block title %}Database View{% endblock %}
 
 {% block content %}
-<div class="title">
-    <h1>Database</h1>
-    <h3>View</h3>
-</div>
+<div class="toolbar">
+      <div class="title" xmlns="http://www.w3.org/1999/html">
+          <h1>SBHS Sports</h1>
+          <h3>Administration - Database View</h3>
+      </div>
+      <div class="menu-buttons"><a class="btn btn-secondary" href="/">Go To Main Page</a></div>
+  </div>
+
 <div class="description">
 
     <table class="table">
@@ -32,11 +36,11 @@
 </table>
 
   <div class="pagination">
-    <a href="/database-view?pg=1"><button>First</button></a>
-    <a href="/database-view?pg={{ page - 1 }}"><button>Previous</button></a>
-    <a href="/"><button>Back to home</button></a>
-    <a href="/database-view?pg={{ page + 1 }}"><button>Next</button></a>
-    <a href="/database-view?pg={{ pages }}"><button>Last</button></a>
+    <a href="/database-view?pg=1" class="btn btn-secondary">First</a>
+    <a href="/database-view?pg={{ page - 1 }}" class="btn btn-secondary">Previous</a>
+    <a href="/" class="btn btn-primary">Back to home</a>
+    <a href="/database-view?pg={{ page + 1 }}" class="btn btn-secondary">Next</a>
+    <a href="/database-view?pg={{ pages }}" class="btn btn-secondary">Last</a>
   </div>
   <p class="pagination">( page {{ page }} of {{ pages }} )</p>
 </div>
