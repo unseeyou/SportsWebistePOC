@@ -35,6 +35,7 @@ def summarise_sport(sport_name: str):
         names=[i for i in formatted_data],
         values=[formatted_data[i] for i in formatted_data],
     )
+    fig.update_layout(paper_bgcolor="rgba(255,255,239,1)")
     fig.update_traces(hovertemplate="%{label}: %{value}")
     return fig.to_html()
 
@@ -67,5 +68,6 @@ def summarise_sport_individual(sport_name: str, student_id: int):
         names=[i for i in formatted_data],
         values=[formatted_data[i] for i in formatted_data],
     )
+    fig.update_layout(paper_bgcolor="rgba(255,255,239,1)")
     fig.update_traces(hovertemplate="%{label}: %{value}")
     return fig.to_html()
