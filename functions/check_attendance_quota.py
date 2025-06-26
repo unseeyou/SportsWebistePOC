@@ -1,6 +1,5 @@
 from constants import app
 
-# TODO: check for optional sessions -> missed do not count to total
 # PLAN:
 # 1. iterate through all students and see if they have met the quota
 # 2. if they have not met the quota, check if they meet the quota given the exempted dates in a second iteration with just those people
