@@ -33,17 +33,15 @@ def reset_db():
 def autocomplete():
     term = request.args.get("term", "")
 
-    cursor = app.database.get_cursor()
-    cursor.execute(
-        """
-        SELECT DISTINCT student_id
-        FROM students
-        WHERE student_id LIKE ?
-        LIMIT 10;
-    """,
-        (f"{term}%",),
-    )
-    results = [row["student_id"] for row in cursor.fetchall()]
-    cursor.close()
-
+    with app.database.cursor() as cursor:
+        cursor.execute(
+            """
+            SELECT DISTINCT student_id
+            FROM students
+            WHERE student_id LIKE ?
+            LIMIT 10;
+        """,
+            (f"{term}%",),
+        )
+        results = [row["student_id"] for row in cursor.fetchall()]
     return jsonify(results)

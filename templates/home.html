@@ -2,34 +2,45 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<div class="title" xmlns="http://www.w3.org/1999/html">
-    <h1>Sports</h1>
-    <h3>Admin</h3>
-</div>
+    <div class="toolbar">
+        <div class="title" xmlns="http://www.w3.org/1999/html">
+            <h1>SBHS Sports</h1>
+            <h3>Administration - Main Page</h3>
+        </div>
+        <div class="menu-buttons"><a class="btn btn-secondary" href="/"><span class="material-symbols-sharp">
+home
+</span></a></div>
+    </div>
 
-<div class="description">
-    <div class="upload">
-    <h1>Upload Student Records</h1>
-    <div class="notif-success" style="display: none">
-        <h3>Success!</h3>
+    <div class="description">
+        <div class="db-stuff">
+        <div class="upload">
+        <h1>Upload Student Records</h1>
+        <div class="notif-success" style="display: none">
+            <h3>Success!</h3>
+        </div>
+        <div class="notif-error" style="display: none">
+            <h3>Error!</h3>
+        </div>
+        <form action="/upload" method="post" enctype="multipart/form-data" id="file-upload">
+            <label for="file">Select an Excel file to upload:</label>
+            <input type="file" id="file" name="file" accept=".xlsx" required>
+            <button type="submit" onclick="alert('Please wait a bit for the entire database to upload!')" class="btn btn-primary">Upload</button>
+        </form>
+            <a href="/database-view" class="btn btn-secondary">View Database</a>
     </div>
-    <div class="notif-error" style="display: none">
-        <h3>Error!</h3>
+        <div class="db-reset">
+            <div class="mx-auto h5 alert alert-danger" style="width: fit-content">DANGER!!!
+                <form action="/api/v1/reset-db" method="post" enctype="multipart/form-data" id="reset-db">
+                    <a href=""><button type="submit" class="btn btn-danger">RESET DB</button></a>
+                </form>
+            </div>
+        </div>
     </div>
-    <form action="/upload" method="post" enctype="multipart/form-data" id="file-upload">
-        <label for="file">Select an Excel file to upload:</label>
-        <input type="file" id="file" name="file" accept=".xlsx" required>
-        <button type="submit" onclick="alert('Please wait a bit for the entire database to upload!')">Upload</button>
-    </form>
-        <a href="/database-view" class="btn btn-primary">View Database</a>
-</div>
-    <div class="mx-auto h5 alert alert-danger" style="width: fit-content">DANGER!!!</div>
-    <form action="/api/v1/reset-db" method="post" enctype="multipart/form-data" id="reset-db">
-        <a href=""><button type="submit" class="btn btn-danger">RESET DB</button></a>
-    </form>
 
     <div class="summary-table">
         <h2>Attendance Data</h2>
+        <p>click on a sport to view its details</p>
         <table>
             <thead>
                 <tr>

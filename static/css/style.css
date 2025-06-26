@@ -418,3 +418,8 @@ input[type="radio"]:checked {
     font-size: medium;
     color: white;
 }
+
+.student-chart {
+    justify-content: center;
+    margin: 1vh;
+}

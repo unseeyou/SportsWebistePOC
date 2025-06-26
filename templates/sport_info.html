@@ -2,14 +2,24 @@
 {% block title %}{{ sport_name }} Info{% endblock %}
 
 {% block content %}
-<div class="title">
-    <h1>{{sport_name}} Overview</h1>
-</div>
+    <div class="toolbar">
+        <div class="title" xmlns="http://www.w3.org/1999/html">
+            <h1>SBHS Sports</h1>
+            <h3>Administration - {{sport_name}} Overview</h3>
+        </div>
+        <div class="menu-buttons"><a class="btn btn-secondary" href="/"><span class="material-symbols-sharp">
+home
+</span></a></div>
+    </div>
+
 <div class="description">
 
     <div class="chart">{{ pie_chart|safe }}</div>
 
-    <h3>Naughty List</h3>
+    <h3>Students who have not attended 80% of their sessions</h3>
+    <p>click on a student or enter their ID in the text box below to see their details</p>
+    <div class="tables">
+    {% for group in slackers %}
     <table>
             <thead>
                 <tr>
@@ -18,14 +28,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for student in slackers %}
-                <tr>
-                    <td>{{ student[0] }}</td>
-                    <td>{{ student[1] }}</td>
+                {% for student in group %}
+                <tr onclick="window.location.href = '/sport/{{ sport_name }}?student_id={{ student[0] }}#student-sports-lookup';">
+                    {% set student_id = student[0]|string %}
+                    {% if selected in student_id and selected != "" %}
+                        <td style="font-weight: bolder; background-color: gold">{{ student[0] }}</td>
+                        <td style="font-weight: bolder; background-color: gold">{{ student[1] }}</td>
+                    {% else %}
+                        <td>{{ student[0] }}</td>
+                        <td>{{ student[1] }}</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
     </table>
+    {% endfor %}
+    </div>
 
     <h4><br>Student ID Lookup</h4>
     <form id="student-sports-lookup" action="/sport/{{ sport_name }}" method="post">
