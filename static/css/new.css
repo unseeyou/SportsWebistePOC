@@ -13,7 +13,9 @@
 .menu-buttons {
     margin-right: 3vw;
     height: fit-content;
-
+    a {
+        padding-top: 1vh;
+    }
 }
 
 .toolbar {
