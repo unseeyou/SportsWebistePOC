@@ -1,17 +1,16 @@
 from constants import app
-import sqlite3
 
 import plotly.express as px
 
 
 def summarise_sport(sport_name: str):
     sport_name = sport_name.strip()
-    cursor: sqlite3.Cursor = app.database.get_cursor()
-    cursor.execute(
-        "SELECT attendance FROM attendance_records WHERE activity = ? collate NOCASE",
-        (sport_name,),
-    )
-    data = [i[0] for i in cursor.fetchall()]
+    with app.database.cursor() as cursor:
+        cursor.execute(
+            "SELECT attendance FROM attendance_records WHERE activity = ? collate NOCASE",
+            (sport_name,),
+        )
+        data = [i[0] for i in cursor.fetchall()]
 
     formatted_data = {
         "Present": data.count("Present"),
@@ -42,13 +41,13 @@ def summarise_sport(sport_name: str):
 
 def summarise_sport_individual(sport_name: str, student_id: int):
     sport_name = sport_name.strip()
-    cursor: sqlite3.Cursor = app.database.get_cursor()
-    cursor.execute(
-        "SELECT attendance FROM attendance_records WHERE activity = ? collate NOCASE AND student_id = ?",
-        (sport_name, student_id),
-    )
+    with app.database.cursor() as cursor:
+        cursor.execute(
+            "SELECT attendance FROM attendance_records WHERE activity = ? collate NOCASE AND student_id = ?",
+            (sport_name, student_id),
+        )
 
-    result = cursor.fetchall()
+        result = cursor.fetchall()
     data = [i[0] for i in result]
 
     if len(data) < 1:

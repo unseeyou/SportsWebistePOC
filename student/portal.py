@@ -26,7 +26,6 @@ def student_home():
             print(oidc_profile)
             return "SBHS account must be for a student.", 401
         custom_app.logger.debug("Rendering log in true")
-        cursor = custom_app.database.get_cursor()
 
         # TODO: THIS IS JUST FOR TESTING!!! REMOVE FOR PROD!!!
         student_id = str(oidc_profile["student_id"])
@@ -47,15 +46,16 @@ def student_home():
             )
 
         try:
-            cursor.execute("SELECT * FROM students WHERE student_id = ?", (student_id,))
-            result = cursor.fetchall()[0]
-            cursor.close()
+            with custom_app.database.cursor() as cursor:
+                cursor.execute(
+                    "SELECT * FROM students WHERE student_id = ?", (student_id,)
+                )
+                result = cursor.fetchall()[0]
             return render_template(
                 template, logged_in=True, name=result[1], charts=charts
             )
         except sqlite3.OperationalError:
             custom_app.logger.error("Unable to reach database")
-            cursor.close()
             return render_template(template, logged_in=True, name="ERROR")
 
     else:
@@ -67,6 +67,7 @@ def student_home():
 
 @student_portal.route("/logout")
 def logout_student():
+    template = "student-portal.html"
     if request.args.get("confirmed", False):
         session["oidc_auth_profile"] = ""
         return redirect(
@@ -74,7 +75,6 @@ def logout_student():
         )
     else:
         if custom_app.oidc.user_loggedin:
-            template = "student-portal.html"
             oidc_profile = session["oidc_auth_profile"]
 
             # Teachers can potentially log in through the school's OIDC server
@@ -83,7 +83,6 @@ def logout_student():
                 print(oidc_profile)
                 return "SBHS account must be for a student.", 401
             custom_app.logger.debug("Rendering log in true")
-            cursor = custom_app.database.get_cursor()
 
             # TODO: THIS IS JUST FOR TESTING!!! REMOVE FOR PROD!!!
             student_id = str(oidc_profile["student_id"])
@@ -104,11 +103,11 @@ def logout_student():
                 )
 
             try:
-                cursor.execute(
-                    "SELECT * FROM students WHERE student_id = ?", (student_id,)
-                )
-                result = cursor.fetchall()[0]
-                cursor.close()
+                with custom_app.database.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT * FROM students WHERE student_id = ?", (student_id,)
+                    )
+                    result = cursor.fetchall()[0]
                 return render_template(
                     template,
                     logged_in=True,
@@ -118,7 +117,6 @@ def logout_student():
                 )
             except sqlite3.OperationalError:
                 custom_app.logger.error("Unable to reach database")
-                cursor.close()
                 return render_template(template, logged_in=True, name="ERROR")
 
         else:

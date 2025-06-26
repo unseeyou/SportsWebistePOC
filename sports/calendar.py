@@ -26,10 +26,9 @@ def datetime_to_str(dt: datetime.date) -> str:
 @calendar_bp.route("/calendar", methods=["GET", "POST"])
 def calendar():
     form = CalendarForm()
-    cursor = app.database.get_cursor()
-    cursor.execute("SELECT activity FROM attendance_records")
-    sports = [(i[0], i[0]) for i in set(cursor.fetchall())]
-    cursor.close()
+    with app.database.cursor() as cursor:
+        cursor.execute("SELECT activity FROM attendance_records")
+        sports = [(i[0], i[0]) for i in set(cursor.fetchall())]
     year_groups = [(f"Year {i}", f"Year {i}") for i in range(7, 13)]
     choices = [("All", "All")] + sports + year_groups
     form.applies_to.choices = choices
@@ -60,23 +59,21 @@ def calendar():
             datetime_to_str(data["start_date"]),
             datetime_to_str(data["end_date"]),
         )
-        cursor = app.database.get_cursor()
-        if data["notes"] == "":
-            cursor.execute(
-                """
-            INSERT INTO exempted_dates (date_start, date_end, applies_to) VALUES (?, ?, ?)
-            """,
-                (start, end, data["applies_to"]),
-            )
-        else:
-            cursor.execute(
-                """
-            INSERT INTO exempted_dates (date_start, date_end, applies_to, applies_to_details) VALUES (?, ?, ?, ?)
-            """,
-                (start, end, data["applies_to"], data["notes"]),
-            )
-        app.database.commit()
-        cursor.close()
+        with app.database.cursor() as cursor:
+            if data["notes"] == "":
+                cursor.execute(
+                    """
+                INSERT INTO exempted_dates (date_start, date_end, applies_to) VALUES (?, ?, ?)
+                """,
+                    (start, end, data["applies_to"]),
+                )
+            else:
+                cursor.execute(
+                    """
+                INSERT INTO exempted_dates (date_start, date_end, applies_to, applies_to_details) VALUES (?, ?, ?, ?)
+                """,
+                    (start, end, data["applies_to"], data["notes"]),
+                )
 
         return render_template("calendar.html", form=form, warning="Success!")
     return render_template("calendar.html", form=form, warning="")

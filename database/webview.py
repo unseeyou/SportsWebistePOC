@@ -13,11 +13,10 @@ def db_missing(err):
 
 @db.route("/database-view")
 def database_view():
-    cursor = app.database.get_cursor()
-    cursor.execute("SELECT * FROM students")
-    data = cursor.fetchall()
+    with app.database.cursor() as cursor:
+        cursor.execute("SELECT * FROM students")
+        data = cursor.fetchall()
     data = sorted(data, key=lambda x: (x[3], x[1].split()[-1]))
-    cursor.close()
 
     pages = []  # split data in 75 rows per page
     for i in range(0, len(data), 15):

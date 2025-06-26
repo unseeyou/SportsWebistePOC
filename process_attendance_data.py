@@ -59,13 +59,11 @@ def demo_scatter_plot():
 
 
 def student_count_per_sport(database):
-    cursor = database.get_cursor()
-    cursor.execute("""
-    SELECT student_id, activity FROM attendance_records
-    """)
-    data = cursor.fetchall()
-    cursor.close()
-
+    with database.cursor() as cursor:
+        cursor.execute("""
+        SELECT student_id, activity FROM attendance_records
+        """)
+        data = cursor.fetchall()
     sports = {}
 
     for entry in data:  # skip the header row
@@ -89,9 +87,9 @@ def student_count_per_sport(database):
 
 
 def average_session_length(database):
-    cursor = database.get_cursor()
-    cursor.execute("SELECT start_time, end_time, activity FROM attendance_records")
-    data = cursor.fetchall()
+    with database.cursor() as cursor:
+        cursor.execute("SELECT start_time, end_time, activity FROM attendance_records")
+        data = cursor.fetchall()
     sessions = {}
 
     for start, end, sport in data:
@@ -139,9 +137,9 @@ def average_session_length(database):
 
 
 def cancelled_sessions(database):
-    cursor = database.get_cursor()
-    cursor.execute("SELECT sport, cancelled_status FROM session_records")
-    data = cursor.fetchall()
+    with database.cursor() as cursor:
+        cursor.execute("SELECT sport, cancelled_status FROM session_records")
+        data = cursor.fetchall()
     sessions = {}
 
     for sport, cancelled_status in data:  # skip the header row
@@ -165,8 +163,7 @@ def cancelled_sessions(database):
 
 
 def list_all_sports(database):
-    cursor = database.get_cursor()
-    cursor.execute("SELECT sport FROM session_records")
-    sports = list(i[0] for i in set(cursor.fetchall()))
-
+    with database.cursor() as cursor:
+        cursor.execute("SELECT sport FROM session_records")
+        sports = list(i[0] for i in set(cursor.fetchall()))
     return sports
