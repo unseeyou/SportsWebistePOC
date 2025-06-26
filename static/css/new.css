@@ -121,6 +121,44 @@
     .pagination {
         margin-bottom: 2vh;
     }
+
+    .heading {
+        margin-top: 4vh;
+        font-size: xxx-large;
+    }
+
+    .attendance-breakdown {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        .student-chart {
+            padding-left: 1vw;
+            padding-right: 1vw;
+            padding-top: 1vh;
+            width: 45vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            h6 {
+                flex: 1;
+                font-size: large;
+            }
+        }
+    }
+
+    .student-btns {
+        display: flex;
+        margin-top: 3vh;
+        justify-content: space-around;
+        a {
+            margin-left: 1vw;
+            margin-right: 1vw;
+        }
+    }
+
+    .logout-confirm .alert {
+        margin-top: 4vh;
+    }
 }
 
 .login-prompt {

@@ -19,14 +19,28 @@ home
             <a href="/student/login"><div class="login-btn btn btn-primary">LOG IN</div></a>
         </div>
     {% else %}
-    <h4>Welcome, {{ name }}!</h4>
+    {% set notif_display = "" if logout_alert else "none" %}
+    <div class="logout-confirm" style="display: {{ notif_display }}">
+        <div class="alert alert-warning" role="alert">
+            <p>Wait! Are you sure you want to log out?</p>
+            <a href="/student" class="btn btn-secondary">Cancel</a>
+            <a href="/student/logout?confirmed=1" class="btn btn-danger">Proceed</a>
+        </div>
+    </div>
+    <h4 class="heading">Welcome, {{ name }}!</h4>
     <h5>Attendance Breakdown</h5>
+    <div class="attendance-breakdown">
     {% for chart in charts %}
+        <div class="student-chart">
         <h6>{{ chart[0] }}</h6>
-        <div class="student-chart">{{ chart[1]|safe }}</div>
+        {{ chart[1]|safe }}</div>
     {% endfor %}
-    <a class="btn btn-primary" href="https://student.sbhs.net.au/absences/extra-curricular" target="_blank">Register a Sports Absence</a>
-    <a href="/student/logout"><div class="logout-btn btn btn-danger">Logout</div></a>
+    </div>
+    <div class="student-btns">
+        <a class="btn btn-primary" href="https://student.sbhs.net.au/absences/extra-curricular" target="_blank">Register a Sports Absence</a>
+        <a href="https://portal-api.clipboard.app/715/login" class="btn btn-secondary" target="_blank">Open Clipboard</a>
+        <a href="/student/logout"><div class="logout-btn btn btn-danger">Logout</div></a>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
