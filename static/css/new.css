@@ -139,6 +139,18 @@
     }
 }
 
+.loading {
+    display: flex;
+    justify-content: center;
+    .spinner {
+        font-size: 200%;
+        flex: 10;
+        margin-left: 49vw;
+        margin-top: 49vh;
+        scale: 2;
+     }
+}
+
 .topbutton {
     text-align: center;
     padding: 1vh;
