@@ -49,7 +49,7 @@ home
     <form id="student-sports-lookup" action="/sport/{{ sport_name }}" method="post">
         <label for="studentID">Enter Student ID </label>
         <input type="text" name="studentID" id="studentID">
-        <button type="submit">Submit</button>
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
 
     <div class="chart">{{ student_pie|safe }}</div>

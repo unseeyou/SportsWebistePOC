@@ -65,7 +65,7 @@ class Database:
         transactions are committed or rolled back.
 
         Yields:
-            sqlite3.Connection: An active SQLite3 connection object.
+            sqlite3.Cursor: A cursor for interacting with the database.
         """
         conn = self.__create_connection()
         cursor = None
@@ -129,8 +129,7 @@ class Database:
             cursor.execute("""
             CREATE TABLE IF NOT EXISTS exempted_dates (
             id integer primary key autoincrement,
-            date_start text not null,
-            date_end text not null,
+            date_str text not null,
             applies_to text not null default 'all',
             applies_to_details text not null default 'n/a'
             )
