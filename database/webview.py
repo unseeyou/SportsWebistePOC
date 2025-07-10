@@ -18,9 +18,9 @@ def database_view():
         data = cursor.fetchall()
     data = sorted(data, key=lambda x: (x[3], x[1].split()[-1]))
 
-    pages = []  # split data in 75 rows per page
-    for i in range(0, len(data), 15):
-        pages.append(data[i : i + 15])
+    pages = []  # split data in 17 rows per page
+    for i in range(0, len(data), 17):
+        pages.append(data[i : i + 17])
 
     page = request.args.get("pg", 1, type=int)
 

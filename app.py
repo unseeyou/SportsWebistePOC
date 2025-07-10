@@ -2,7 +2,6 @@ from flask import (
     render_template,
     request,
     jsonify,
-    session,
     redirect,
 )
 from constants import app
@@ -53,24 +52,6 @@ def upload():
     return None
 
 
-@app.route("/student-only-page")
-def student_only_page():
-    oidc = app.oidc
-    if oidc.user_loggedin:
-        oidc_profile = session["oidc_auth_profile"]
-
-        # Teachers can potentially log in through the school's OIDC server
-        # as well, but we only want students.
-        if "student_id" not in oidc_profile:
-            return "SBHS account must be for a student.", 401
-
-        return f"Hello, {oidc_profile['student_id']}!"
-    else:
-        # The argument to this function is what route we want the user to be
-        # returned to after completing the login. In this case, this page.
-        return oidc.redirect_to_auth_server("/")
-
-
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(target)
@@ -93,4 +74,3 @@ def loading():
 
 if __name__ == "__main__":
     app.run(debug=True, host="localhost")
-    app.database.close()

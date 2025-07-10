@@ -44,7 +44,7 @@ def summarise_sport_individual(sport_name: str, student_id: int):
     sport_name = sport_name.strip()
     with app.database.cursor() as cursor:
         cursor.execute(
-            "SELECT attendance FROM attendance_records WHERE activity = ? collate NOCASE AND student_id = ?",
+            "SELECT attendance FROM attendance_records WHERE instr(activity, ?) AND student_id = ?",
             (sport_name, student_id),
         )
 
