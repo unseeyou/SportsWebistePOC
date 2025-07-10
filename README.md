@@ -6,5 +6,6 @@ Generate overviews for sports attendance based on a variety of factors through p
 ### 2. Streamlined process to detect students who have not met attendance quota
 Better ways to exempt certain dates, and automatically checking each student for their attendance.
 
-### 3. More to come I guess
-Yup
+## Instructions:
+### 1. Run app.py
+Don't set up a default flask profile because then it won't use localhost which breaks the oidc login system
