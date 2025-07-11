@@ -37,27 +37,27 @@ home
                             <td style="font-weight: bolder; background-color: #a7fff5">{{ student[0] }}</td>
                             <td style="font-weight: bolder; background-color: #a7fff5">{{ student[1] }}</td>
                         {% else %}
-                            {% set color = student[1] %}
-                        {% if color >= 90 %}
-                            {% set code = "best" %}
-                        <td class="{{ code }}">{{ student[0] }}</td>
-                        <td class="{{ code }}">{{ student[1] }}</td>
-                        {% elif 80 <= color < 90 %}
-                            {% set code = "high" %}
-                        <td class="{{ code }}">{{ student[0] }}</td>
-                        <td class="{{ code }}">{{ student[1] }}</td>
-                        {% elif 50 <= color < 80 %}
-                            {% set code = "mid" %}
-                        <td class="{{ code }}">{{ student[0] }}</td>
-                        <td class="{{ code }}">{{ student[1] }}</td>
-                        {% elif 25 <= color < 50 %}
-                            {% set code = "low" %}
-                        <td class="{{ code }}">{{ student[0] }}</td>
-                        <td class="{{ code }}">{{ student[1] }}</td>
+                            {% set attendance = student[1] %}
+                        {% if attendance >= 90 %}
+                            {% set colour_code = "best" %}
+                        <td class="{{ colour_code }}">{{ student[0] }}</td>
+                        <td class="{{ colour_code }}">{{ student[1] }}</td>
+                        {% elif 80 <= attendance < 90 %}
+                            {% set colour_code = "high" %}
+                        <td class="{{ colour_code }}">{{ student[0] }}</td>
+                        <td class="{{ colour_code }}">{{ student[1] }}</td>
+                        {% elif 50 <= attendance < 80 %}
+                            {% set colour_code = "mid" %}
+                        <td class="{{ colour_code }}">{{ student[0] }}</td>
+                        <td class="{{ colour_code }}">{{ student[1] }}</td>
+                        {% elif 25 <= attendance < 50 %}
+                            {% set colour_code = "low" %}
+                        <td class="{{ colour_code }}">{{ student[0] }}</td>
+                        <td class="{{ colour_code }}">{{ student[1] }}</td>
                         {% else %}
-                            {% set code = "worst" %}
-                        <td class="{{ code }}">{{ student[0] }}</td>
-                        <td class="{{ code }}">{{ student[1] }}</td>
+                            {% set colour_code = "worst" %}
+                        <td class="{{ colour_code }}">{{ student[0] }}</td>
+                        <td class="{{ colour_code }}">{{ student[1] }}</td>
                         {% endif %}
                         {% endif %}
                     </tr>
