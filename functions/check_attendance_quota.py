@@ -44,7 +44,7 @@ def fast_sql_query(sport: str, naughty_list: bool = True):
     results.sort(key=lambda x: x[1])
     if naughty_list:
         return [(a, c) for a, c in results if c < 80]
-    return [(a, c) for a, c in results]
+    return [(a, c) for a, c in results if c >= 80]
 
 
 def get_exclusion_dates_for_student(student_id: str):

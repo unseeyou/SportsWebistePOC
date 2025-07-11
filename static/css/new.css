@@ -119,6 +119,27 @@
             margin-left: 1vw;
             margin-right: 1vw;
         }
+        tr:hover {
+            td {
+                transition-duration: 0.2s;
+                background-color: aliceblue;
+            }
+        }
+        .worst {
+            background-color: #ff9090;
+        }
+        .low {
+            background-color: #ffcdcd;
+        }
+        .mid {
+            background-color: #ffe77d;
+        }
+        .high {
+            background-color: #caffbb;
+        }
+        .best {
+            background-color: #9fff83;
+        }
     }
 
     .table {
@@ -128,10 +149,6 @@
         }
         td {
             width: 30%;
-        }
-        td:hover {
-            color: darkslategrey;
-            background-color: aliceblue;
         }
     }
 
@@ -161,6 +178,11 @@
                 font-size: large;
             }
         }
+    }
+
+    .collapse-btn {
+        margin-bottom: 2vh;
+        margin-left: 0.5vw;
     }
 
     .student-btns {
