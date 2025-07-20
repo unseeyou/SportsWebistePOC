@@ -1,4 +1,5 @@
 from constants import app
+from functions.check_attendance_quota import str_to_datetime
 
 import plotly.express as px
 from datetime import datetime
@@ -12,7 +13,11 @@ def summarise_sport(sport_name: str, dates: Iterable[datetime] = ()) -> str:
             "SELECT attendance, date FROM attendance_records WHERE activity = ? collate NOCASE",
             (sport_name,),
         )
-        data = [i[0] for i in cursor.fetchall() if i[1] in dates or not dates]
+        data = [
+            i[0]
+            for i in cursor.fetchall()
+            if str_to_datetime(i[1]).date() in dates or not dates
+        ]
 
     formatted_data = {
         "Present": data.count("Present"),
@@ -42,7 +47,7 @@ def summarise_sport_individual(
         )
 
         result = cursor.fetchall()
-    data = [i[0] for i in result if i[1] in dates or not dates]
+    data = [i[0] for i in result if str_to_datetime(i[1]).date() in dates or not dates]
 
     if len(data) < 1:
         return f"<b>No data found for {student_id} :(</b>"
