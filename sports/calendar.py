@@ -20,7 +20,7 @@ class CalendarForm(FlaskForm):
 
 
 def datetime_to_str(dt: datetime.date) -> str:
-    return f"{dt.day}/{dt.month}/{dt.year}"
+    return f"{dt.day}-{dt.month}-{dt.year} 00:00:00"
 
 
 @calendar_bp.route("/calendar", methods=["GET", "POST"])
@@ -55,25 +55,19 @@ def calendar():
                 warning="Please make sure start date is before end date!",
             )
 
-        start, end = (
-            datetime_to_str(data["start_date"]),
-            datetime_to_str(data["end_date"]),
-        )
+        start, end = data["start_date"], data["end_date"]
+        day_amt = (end - start).days + 1
         with app.database.cursor() as cursor:
-            if data["notes"] == "":
+            for date in [
+                d for d in (start + datetime.timedelta(n) for n in range(day_amt))
+            ]:
                 cursor.execute(
-                    """
-                INSERT INTO exempted_dates (date_start, date_end, applies_to) VALUES (?, ?, ?)
-                """,
-                    (start, end, data["applies_to"]),
+                    "INSERT INTO exempted_dates (date_str, applies_to, applies_to_details) VALUES (?, ?, ?)",
+                    (datetime_to_str(date), data["applies_to"], data["notes"]),
                 )
-            else:
-                cursor.execute(
-                    """
-                INSERT INTO exempted_dates (date_start, date_end, applies_to, applies_to_details) VALUES (?, ?, ?, ?)
-                """,
-                    (start, end, data["applies_to"], data["notes"]),
-                )
-
-        return render_template("calendar.html", form=form, warning="Success!")
+        warning = """<div class="alert alert-success alert-dismissible notif">
+            <div>Success!</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>"""
+        return render_template("calendar.html", form=form, warning=warning)
     return render_template("calendar.html", form=form, warning="")

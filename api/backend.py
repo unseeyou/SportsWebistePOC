@@ -1,4 +1,4 @@
-from flask import Blueprint, send_file, jsonify, request
+from flask import Blueprint, send_file, jsonify, request, render_template
 from constants import app
 import process_attendance_data
 import json
@@ -26,7 +26,15 @@ def cancelled_sessions():
 @api.route("/reset-db", methods=["POST"])
 def reset_db():
     app.database.reset()
-    return "Database reset"
+    return render_template(
+        "home.html",
+        notifications=[
+            {
+                "type": "warning",
+                "content": "Database successfully reset.",
+            },
+        ],
+    )
 
 
 @api.route("/autocomplete", methods=["GET"])

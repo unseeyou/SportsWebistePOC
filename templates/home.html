@@ -13,22 +13,25 @@ home
     </div>
 
     <div class="description">
+        {% if notifications %}
+        {% for notif in notifications %}
+        <div class="alert alert-{{ notif.type if notif.type else 'secondary'}} alert-dismissible notif">
+            <div>{{ notif.content }}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
         <div class="sideways-frame">
             <div class="db-stuff">
             <div class="upload">
             <h1>Upload Student Records</h1>
-            <div class="notif-success" style="display: none">
-                <h3>Success!</h3>
-            </div>
-            <div class="notif-error" style="display: none">
-                <h3>Error!</h3>
-            </div>
             <form action="/upload" method="post" enctype="multipart/form-data" id="file-upload">
                 <label for="file">Select an Excel file to upload:</label>
                 <input type="file" id="file" name="file" accept=".xlsx" required>
                 <button type="submit" onclick="alert('Please wait a bit for the entire database to upload!')" class="btn btn-primary">Upload</button>
             </form>
                 <a href="/database-view" class="btn btn-secondary">View Database</a>
+                <a class="btn btn-secondary" href="/calendar">Manage Exemptions</a>
         </div>
             <div class="db-reset">
                 <div class="mx-auto h5 alert alert-danger" style="width: fit-content">DANGER!!!

@@ -36,5 +36,4 @@ def index():
         current_app.database.ping()
     except OperationalError:
         print("Database is not working")
-    finally:
-        return render_template("home.html")
+    return render_template("home.html")

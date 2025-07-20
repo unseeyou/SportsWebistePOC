@@ -209,6 +209,12 @@
             margin-bottom: 0.5vh;
         }
     }
+
+    .calendar-select {
+        margin: 4vh;
+        padding: 3vh;
+        line-height: 2;
+    }
 }
 
 .login-prompt {
@@ -244,4 +250,8 @@
     padding: 1vh;
     display: none;
     margin: 2vh auto;
+}
+
+.notif {
+    margin-top: 5vh;
 }
