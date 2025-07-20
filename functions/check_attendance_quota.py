@@ -41,16 +41,16 @@ def fast_sql_query(sport: str, naughty_list: bool = True):
         # TODO: change exempted_dates to store every single date and time (when relevant)
         # instead of range for easier sql filter
         results = cursor.fetchall()
-    print(f"{results=}\n{len(results)}")
+    # print(f"{results=}\n{len(results)}")
     results = [
         i
         for i in results
         if i[1] and i[0] and i[2] and i[2] not in get_exclusion_dates_for_student(i[0])
     ]
-    results.sort(key=lambda x: x[1])
+    results.sort(key=lambda x: x[2])
     if naughty_list:
-        return [(a, c) for a, b, c in results if c < 80]
-    return [(a, c) for a, b, c in results if c >= 80]
+        return [(a, int(c)) for a, b, c in results if c < 80]
+    return [(a, int(c)) for a, b, c in results if c >= 80]
 
 
 def get_exclusion_dates_for_student(student_id: str):
@@ -129,7 +129,11 @@ def get_student_sports(student_id: str):
 
 
 def str_to_datetime(string: str):
-    return datetime.strptime(string, "%d-%m-%Y %H:%M:%S")
+    # Somehow the date gets flipped somewhere in the code so this accounts for both ways
+    try:
+        return datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return datetime.strptime(string, "%d-%m-%Y %H:%M:%S")
 
 
 def check_attendance_with_date_range(
@@ -153,15 +157,15 @@ def check_attendance_with_date_range(
         # instead of range for easier sql filter
         results = cursor.fetchall()
 
-    print(f"{results=}\n{len(results)}")
+    # print(f"{results=}\n{len(results)}")
     results = [
         i
         for i in results
         if i[2]
-        and date_start < str_to_datetime(i[1]) < date_end
+        and date_start < str_to_datetime(i[1]).date() < date_end
         and str_to_datetime(i[1]) not in get_exclusion_dates_for_student(i[0])
     ]
     results.sort(key=lambda x: x[2])
     if naughty_list:
-        return [(a, c) for a, b, c in results if c < 80]
-    return [(a, c) for a, b, c in results if c >= 80]
+        return [(a, int(c)) for a, b, c in results if c < 80]
+    return [(a, int(c)) for a, b, c in results if c >= 80]
