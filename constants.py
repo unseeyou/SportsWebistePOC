@@ -6,6 +6,7 @@ from flask_oidc import OpenIDConnect
 class CustomApp(Flask):
     def __init__(self, *args, **kwargs):
         super(CustomApp, self).__init__(*args, **kwargs)
+        self.logger.setLevel("DEBUG")
         self.config["OIDC_CLIENT_SECRETS"] = "client_secrets.json"
         self.config["OIDC_SCOPES"] = "openid profile"
         self.database: Database = Database()
