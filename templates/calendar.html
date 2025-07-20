@@ -13,17 +13,17 @@ home
     </div>
 
 <div class="description">
-    <b>{{ warning }}</b>
-    <div class="calendar-select">
+    {{ warning|safe }}
+    <div class="calendar-select card">
         <form action="" method="post">
             <div class="form-option">
             Start:
             {{ form.start_date }}
-            </div>
+            </div><br>
             <div class="form-option">
             End:
             {{ form.end_date }}
-            </div>
+            </div><br>
             <div class="form-option">
             Who this exemption applies to:
             {{ form.applies_to }}
@@ -31,7 +31,7 @@ home
             <div class="form-option">
                 OPTIONAL: Extra notes related to the exemption (i.e. reason for exemption):
                 {{ form.notes }}
-            </div>
+            </div><br>
             <div class="form-option">
                 {{ form.submit }}
             </div>
