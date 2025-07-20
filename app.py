@@ -1,7 +1,6 @@
 from flask import (
     render_template,
     request,
-    jsonify,
     redirect,
 )
 from constants import app
@@ -34,10 +33,26 @@ def upload():
     elif request.method == "POST":
         files = request.files
         if "file" not in files:
-            return jsonify({"error": "No file detected"})
+            return render_template(
+                "home.html",
+                notifications=[
+                    {
+                        "type": "danger",
+                        "content": "Error: No file detected.",
+                    },
+                ],
+            )
         file = files["file"]
         if not file.filename:
-            return jsonify({"error": "No file selected"})
+            return render_template(
+                "home.html",
+                notifications=[
+                    {
+                        "type": "danger",
+                        "content": "Error: No file selected.",
+                    },
+                ],
+            )
         if file and file.filename.endswith(".xlsx"):
             filename = secure_filename(file.filename)
             fp = os.path.join("uploads", filename)
@@ -45,9 +60,23 @@ def upload():
             app.database.setup()
             app.database.populate(fp)
             os.remove(fp)
-            return jsonify({"success": "File uploaded successfully"})
-        return jsonify(
-            {"error": f"Unsupported file type (.{file.filename.split('.')[-1]})"}
+            return render_template(
+                "home.html",
+                notifications=[
+                    {
+                        "type": "success",
+                        "content": "Database updated successfully!",
+                    },
+                ],
+            )
+        return render_template(
+            "home.html",
+            notifications=[
+                {
+                    "type": "danger",
+                    "content": f"Error: Unsupported file type (.{file.filename.split('.')[-1]})",
+                },
+            ],
         )
     return None
 
