@@ -23,6 +23,27 @@ def datetime_to_str(dt: datetime.date) -> str:
     return f"{dt.day}-{dt.month}-{dt.year} 00:00:00"
 
 
+def get_all_students_from_sport(sport: str):
+    with app.database.cursor() as cursor:
+        cursor.execute(
+            "SELECT student_id FROM attendance_records WHERE instr(activity, ?) collate NOCASE",
+            (sport,),
+        )
+        result = cursor.fetchall()
+    return list(set([i[0] for i in result]))
+
+
+def get_all_students_from_year(year: str):
+    with app.database.cursor() as cursor:
+        yr_num = year.strip("Year ").strip()
+        cursor.execute(
+            "SELECT student_id FROM students WHERE year_group = ?",
+            (yr_num,),
+        )
+        result = cursor.fetchall()
+    return list(set([i[0] for i in result]))
+
+
 @calendar_bp.route("/calendar", methods=["GET", "POST"])
 def calendar():
     form = CalendarForm()
@@ -61,10 +82,22 @@ def calendar():
             for date in [
                 d for d in (start + datetime.timedelta(n) for n in range(day_amt))
             ]:
-                cursor.execute(
-                    "INSERT INTO exempted_dates (date_str, applies_to, applies_to_details) VALUES (?, ?, ?)",
-                    (datetime_to_str(date), data["applies_to"], data["notes"]),
-                )
+                if data["applies_to"].startswith("Year"):
+                    students = get_all_students_from_year(data["applies_to"])
+                    date = datetime_to_str(date)
+                    for student in students:
+                        cursor.execute(
+                            "INSERT INTO exempted_dates (date_str, applies_to, applies_to_details) VALUES (?, ?, ?)",
+                            (date, student, data["notes"]),
+                        )
+                else:
+                    students = get_all_students_from_sport(data["applies_to"])
+                    date = datetime_to_str(date)
+                    for student in students:
+                        cursor.execute(
+                            "INSERT INTO exempted_dates (date_str, applies_to, applies_to_details) VALUES (?, ?, ?)",
+                            (date, student, data["notes"]),
+                        )
         warning = """<div class="alert alert-success alert-dismissible notif">
             <div>Success!</div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

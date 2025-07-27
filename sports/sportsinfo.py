@@ -55,7 +55,7 @@ def sports_info_page(sport_name):
         # pie_chart = summarise_sport(sport_name)
         student_id = request.form.get("studentID")
         if student_id.isnumeric() and len(student_id) == 9:
-            if not form.is_submitted():
+            if not form.start_date.data:
                 student_pie = summarise_sport_individual(sport_name, int(student_id))
             else:
                 start_date = form.start_date.data
@@ -108,6 +108,7 @@ def sports_info_page(sport_name):
             start_date + i * timedelta(days=1)
             for i in range((end_date - start_date).days + 1)
         ]
+        app.logger.debug(f"{dates=}")
         pie_chart = summarise_sport(sport_name, dates=dates)
         return render_template(
             "sport_info.html",

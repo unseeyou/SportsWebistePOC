@@ -102,7 +102,7 @@ home
                         <td style="font-weight: bolder; background-color: gold">{{ student[0] }}</td>
                         <td style="font-weight: bolder; background-color: gold">{{ student[1] }}</td>
                     {% else %}
-                    {% set color = student[1] %}
+                    {% set color = student[1]|int %}
                         {% if color >= 90 %}
                             {% set code = "best" %}
                         <td class="{{ code }}">{{ student[0] }}</td>
